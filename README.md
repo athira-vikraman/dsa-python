@@ -62,6 +62,6 @@ topic has something to compare against.
 
 ---
 
-`binary_search.py` in this folder is an early scratch exercise, kept as-is.
-The finished version, with the full analysis, lives in
-[`01_Big_O_Notation/code/04_logarithmic_time.py`](01_Big_O_Notation/code/04_logarithmic_time.py).
+Binary search, fully worked and analysed, lives in
+[`01_Big_O_Notation/code/04_logarithmic_time.py`](01_Big_O_Notation/code/04_logarithmic_time.py) —
+iterative and recursive versions, with the O(log n) reasoning.
