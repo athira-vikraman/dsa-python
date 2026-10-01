@@ -21,8 +21,8 @@ Standard library only. Python 3.8+.
 | # | Topic | Status |
 |---|-------|--------|
 | 01 | [Big O Notation](01_Big_O_Notation/) — complexity analysis | ✅ done |
-| 02 | Arrays & strings (two pointers, sliding window) | ⬜ next |
-| 03 | Hash maps & sets | ⬜ |
+| 02 | [Arrays & Strings](02_Arrays_And_Strings/) — two pointers, sliding window | ✅ done |
+| 03 | Hash maps & sets | ⬜ next |
 | 04 | Stacks & queues | ⬜ |
 | 05 | Linked lists | ⬜ |
 | 06 | Recursion & backtracking | ⬜ |
