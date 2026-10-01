@@ -20,6 +20,7 @@ logarithmic = load_code("04_logarithmic_time.py")
 linearithmic = load_code("05_linearithmic_time.py")
 exponential = load_code("06_exponential_time.py")
 space = load_code("07_space_complexity.py")
+simple = load_code("10_time_vs_space_simple.py")
 
 
 class TestConstantTime(unittest.TestCase):
@@ -237,6 +238,66 @@ class TestSpaceComplexity(unittest.TestCase):
             data = [random.randint(0, 8) for _ in range(random.randint(0, 15))]
             self.assertEqual(space.has_duplicate_low_space(data),
                              space.has_duplicate_low_time(data))
+
+
+class TestTimeVsSpaceSimple(unittest.TestCase):
+    """The beginner lesson (notes/05a) - every pair of functions must give
+    the SAME answer, so the only difference left is time and memory."""
+
+    def test_counting_and_collecting_agree(self):
+        for _ in range(20):
+            data = [random.randint(0, 50) for _ in range(random.randint(0, 40))]
+            self.assertEqual(simple.count_evens(data),
+                             len(simple.collect_evens(data)))
+
+    def test_count_evens(self):
+        self.assertEqual(simple.count_evens([1, 2, 3, 4]), 2)
+        self.assertEqual(simple.count_evens([]), 0)
+        self.assertEqual(simple.count_evens([1, 3, 5]), 0)
+
+    def test_collect_evens(self):
+        self.assertEqual(simple.collect_evens([1, 2, 3, 4]), [2, 4])
+        self.assertEqual(simple.collect_evens([]), [])
+
+    def test_biggest_matches_builtin(self):
+        data = [random.randint(-500, 500) for _ in range(100)]
+        self.assertEqual(simple.biggest(data), max(data))
+
+    def test_copy_list_is_a_real_copy(self):
+        original = [1, 2, 3]
+        copied = simple.copy_list(original)
+        self.assertEqual(copied, original)
+        self.assertIsNot(copied, original, "must be a NEW list - that is the O(n) space")
+
+    def test_recursive_and_loop_sums_agree(self):
+        for _ in range(20):
+            data = [random.randint(0, 100) for _ in range(random.randint(0, 50))]
+            self.assertEqual(simple.add_up_recursive(data), simple.add_up_loop(data))
+            self.assertEqual(simple.add_up_loop(data), sum(data))
+
+    def test_recursion_runs_out_of_space_but_the_loop_does_not(self):
+        """Space complexity you can crash into: n chairs vs one chair."""
+        big = list(range(100_000))
+        self.assertEqual(simple.add_up_loop(big), sum(big))
+        with self.assertRaises(RecursionError):
+            simple.add_up_recursive(big)
+
+    def test_memory_measurement_shows_the_difference(self):
+        """O(1) space must stay flat while O(n) space grows."""
+        small = list(range(20_000))
+        large = list(range(200_000))
+
+        counting_small = simple.extra_memory_kb(simple.count_evens, small)
+        counting_large = simple.extra_memory_kb(simple.count_evens, large)
+        collecting_small = simple.extra_memory_kb(simple.collect_evens, small)
+        collecting_large = simple.extra_memory_kb(simple.collect_evens, large)
+
+        # O(1): 10x the input must not meaningfully change the memory
+        self.assertLess(counting_large, counting_small + 5,
+                        "count_evens should use a flat amount of memory")
+        # O(n): 10x the input should use several times more memory
+        self.assertGreater(collecting_large, collecting_small * 4,
+                           "collect_evens memory should grow with the input")
 
 
 if __name__ == "__main__":

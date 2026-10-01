@@ -32,6 +32,7 @@ python3 -m unittest discover -s tests -v
 | 2 | [What Big O means](notes/02_what_is_big_o.md) | — | define O, Ω, Θ, and worst vs average case |
 | 3 | [The rules](notes/03_rules_of_big_o.md) | — | reduce `4n² + 7n + 12` to `O(n²)` |
 | 4 | [The complexity classes](notes/04_common_complexity_classes.md) | `code/01`–`code/06` | recognise each class on sight |
+| 5a | [**Time vs space, gentle version**](notes/05a_time_vs_space_for_beginners.md) | `code/10_time_vs_space_simple.py` | explain the difference in your own words |
 | 5 | [Space complexity](notes/05_space_complexity.md) | `code/07_space_complexity.py` | answer "…and the space complexity?" |
 | 6 | [Recursion & amortized](notes/06_recursion_and_amortized.md) | `code/06_exponential_time.py` | analyse recursion; explain amortized O(1) |
 | 7 | [Python operation costs](notes/07_python_operation_costs.md) | `code/08_python_builtin_costs.py` | stop writing accidental O(n²) |
@@ -47,8 +48,8 @@ Then do the [exercises](exercises/exercises.md).
 ```
 01_Big_O_Notation/
 ├── README.md                  <- you are here
-├── notes/                     9 lessons, in reading order
-├── code/                      9 runnable demonstrations
+├── notes/                     10 lessons, in reading order
+├── code/                      10 runnable demonstrations
 │   ├── 01_constant_time.py         O(1)
 │   ├── 02_linear_time.py           O(n)
 │   ├── 03_quadratic_time.py        O(n²) + how to fix it
@@ -57,7 +58,8 @@ Then do the [exercises](exercises/exercises.md).
 │   ├── 06_exponential_time.py      O(2ⁿ) + memoization escape
 │   ├── 07_space_complexity.py      measured memory usage
 │   ├── 08_python_builtin_costs.py  the 5 Python performance traps
-│   └── 09_growth_experiment.py     ASCII charts of every curve
+│   ├── 09_growth_experiment.py     ASCII charts of every curve
+│   └── 10_time_vs_space_simple.py  time vs space, measured (beginner)
 ├── exercises/
 │   ├── exercises.md           15 analysis drills + answer key
 │   ├── practice.py            12 functions for YOU to write

@@ -3,6 +3,12 @@
 > **Goal:** answer the second half of every interview question —
 > "...and what's the space complexity?"
 
+> 🧑‍🎓 **New to this? Start with
+> [Lesson 5a — Time vs Space, the Gentle Version](05a_time_vs_space_for_beginners.md)
+> instead.** It teaches the same ideas from zero, with no jargon, then sends
+> you back here. This lesson assumes you already have the mental picture and
+> adds the vocabulary on top.
+
 ---
 
 ## 5.1 The question space complexity asks
