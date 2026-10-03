@@ -1,0 +1,1491 @@
+<title>DSA Visual Workbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+
+<style>
+/* Layout: a workbook page - squared-paper ground, a stage where the array is
+   drawn as numbered boxes, and the Python it is running pinned beside it. */
+:root {
+  --paper:      #eaeef2;
+  --surface:    #ffffff;
+  --surface-2:  #f3f6f8;
+  --ink:        #16222e;
+  --ink-soft:   #55646f;
+  --ink-faint:  #8595a1;
+  --line:       #d2dbe3;
+  --grid:       #dde4ea;
+  --accent:     #0b6b63;
+  --accent-soft:#d6ebe8;
+  --left:       #bd5f1a;
+  --left-soft:  #fae3cf;
+  --right:      #6245bd;
+  --right-soft: #e4ddf8;
+  --win:        #1f7a4d;
+  --win-soft:   #d6eedf;
+  --bad:        #b3261e;
+  --bad-soft:   #f8dcda;
+  --shadow:     0 1px 2px rgba(22,34,46,.08), 0 6px 18px rgba(22,34,46,.06);
+
+  --display: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --body:    "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:    "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:      #0e161d;
+    --surface:    #15202a;
+    --surface-2:  #1b2832;
+    --ink:        #e7eef4;
+    --ink-soft:   #a2b2c0;
+    --ink-faint:  #71838f;
+    --line:       #28363f;
+    --grid:       #1b2932;
+    --accent:     #4ecdc0;
+    --accent-soft:#113b38;
+    --left:       #f2a35e;
+    --left-soft:  #4a2f14;
+    --right:      #b6a0f5;
+    --right-soft: #312652;
+    --win:        #6dcf95;
+    --win-soft:   #16402b;
+    --bad:        #ff8d82;
+    --bad-soft:   #4a1d1a;
+    --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:      #0e161d;
+  --surface:    #15202a;
+  --surface-2:  #1b2832;
+  --ink:        #e7eef4;
+  --ink-soft:   #a2b2c0;
+  --ink-faint:  #71838f;
+  --line:       #28363f;
+  --grid:       #1b2932;
+  --accent:     #4ecdc0;
+  --accent-soft:#113b38;
+  --left:       #f2a35e;
+  --left-soft:  #4a2f14;
+  --right:      #b6a0f5;
+  --right-soft: #312652;
+  --win:        #6dcf95;
+  --win-soft:   #16402b;
+  --bad:        #ff8d82;
+  --bad-soft:   #4a1d1a;
+  --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 26px 26px;
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-inline: 16px;
+  padding-block: 28px 56px;
+}
+
+/* ---------- header ---------- */
+header { margin-bottom: 20px; }
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 6px;
+}
+h1 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(26px, 5vw, 38px);
+  line-height: 1.1;
+  margin: 0 0 8px;
+  text-wrap: balance;
+}
+.lede {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--ink-soft);
+}
+
+/* ---------- tabs ---------- */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 22px 0 18px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+}
+.tab {
+  font: 500 14px var(--body);
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 7px 15px;
+  cursor: pointer;
+}
+.tab:hover { background: var(--surface-2); color: var(--ink); }
+.tab[aria-selected="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--surface);
+}
+/* ---------- panels / cards ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+.card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.card-head h2 {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+.card-body { padding: 18px; }
+
+.badge {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  white-space: nowrap;
+}
+.badge.space { background: var(--surface-2); color: var(--ink-soft); }
+
+/* ---------- algorithm picker ---------- */
+.picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.pick {
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-family: var(--body);
+  color: var(--ink);
+  min-width: 0;
+}
+.pick:hover { border-color: var(--accent); }
+.pick[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.pick .pick-name { display: block; font-weight: 600; font-size: 14px; }
+.pick .pick-tech {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-top: 2px;
+}
+
+/* ---------- the stage ---------- */
+.stage-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 880px) { .stage-grid { grid-template-columns: 1fr; } }
+
+.track-scroll { overflow-x: auto; padding-bottom: 4px; }
+.track {
+  display: flex;
+  gap: 6px;
+  min-width: min-content;
+  padding-block: 6px;
+}
+.slot { min-width: 0; }
+.cell {
+  width: 46px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 500;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
+}
+.cell.in-window { background: var(--win-soft); border-color: var(--win); }
+.cell.at-left   { background: var(--left-soft);  border-color: var(--left);  }
+.cell.at-right  { background: var(--right-soft); border-color: var(--right); }
+.cell.hit       { background: var(--accent-soft); border-color: var(--accent); transform: translateY(-3px); }
+.cell.miss      { background: var(--bad-soft); border-color: var(--bad); }
+.cell.done      { color: var(--ink-faint); opacity: .55; }
+.idx {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  margin-top: 3px;
+}
+.marks {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+  min-height: 20px;
+  margin-top: 2px;
+}
+.mark {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 4px;
+  line-height: 1.4;
+}
+.mark.L { background: var(--left-soft);  color: var(--left);  }
+.mark.R { background: var(--right-soft); color: var(--right); }
+.mark.W { background: var(--accent-soft); color: var(--accent); }
+.mark.r { background: var(--surface-2); color: var(--ink-soft); border: 1px solid var(--line); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cell { transition: none; }
+}
+
+/* ---------- caption + stats ---------- */
+.note {
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.5;
+  background: var(--surface-2);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 7px 7px 0;
+  padding: 11px 13px;
+  margin-top: 14px;
+  min-height: 62px;
+}
+.note.verdict-true  { border-left-color: var(--win); }
+.note.verdict-false { border-left-color: var(--bad); }
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 14px;
+  padding-top: 13px;
+  border-top: 1px dashed var(--line);
+}
+.stat-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.stat-value {
+  font-family: var(--mono);
+  font-size: 19px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- controls ---------- */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+button.btn {
+  font: 500 14px var(--body);
+  padding: 8px 14px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+button.btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+button.btn:disabled { opacity: .4; cursor: not-allowed; }
+button.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  min-width: 96px;
+}
+:root[data-theme="dark"] button.btn.primary { color: #06231f; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) button.btn.primary { color: #06231f; }
+}
+button.btn.primary:hover:not(:disabled) { color: #fff; filter: brightness(1.08); }
+:root[data-theme="dark"] button.btn.primary:hover:not(:disabled) { color: #06231f; }
+
+.scrub { display: flex; align-items: center; gap: 9px; flex: 1 1 220px; min-width: 0; }
+.scrub input[type="range"] { flex: 1; min-width: 0; accent-color: var(--accent); }
+.step-count {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.speed { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--ink-soft); }
+.speed input[type="range"] { width: 92px; accent-color: var(--accent); }
+
+.input-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+}
+.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.field label { font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-faint); }
+.field input {
+  font-family: var(--mono);
+  font-size: 14px;
+  padding: 7px 10px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--ink);
+  min-width: 0;
+  width: 100%;
+}
+.field.grow { flex: 1 1 210px; }
+.field.small { flex: 0 0 92px; }
+.field input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.err { color: var(--bad); font-size: 12px; margin-top: 8px; min-height: 17px; }
+
+/* ---------- code panel ---------- */
+.code {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.75;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 12px 0;
+  overflow-x: auto;
+}
+.code-line {
+  display: flex;
+  gap: 12px;
+  padding: 0 14px;
+  white-space: pre;
+  width: max-content;
+  min-width: 100%;
+}
+.code-line.active { background: var(--accent-soft); }
+.code-line .ln {
+  color: var(--ink-faint);
+  user-select: none;
+  min-width: 16px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.code-line.active .ln { color: var(--accent); font-weight: 600; }
+.panel-title {
+  font-size: 11px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 8px;
+}
+.why {
+  margin-top: 14px;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+.why strong { color: var(--ink); font-weight: 600; }
+
+/* ---------- Big O chart ---------- */
+.chart-wrap { overflow-x: auto; }
+svg.chart { display: block; width: 100%; min-width: 460px; height: auto; }
+.ax-line { stroke: var(--line); stroke-width: 1; fill: none; }
+.ax-text { fill: var(--ink-faint); font-family: var(--mono); font-size: 10px; }
+.curve { fill: none; stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+.curve-label { font-family: var(--mono); font-size: 11px; font-weight: 500; }
+.marker-line { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 3 3; }
+.dot { stroke: var(--surface); stroke-width: 1.5; }
+
+table.ops {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  margin-top: 4px;
+}
+table.ops th, table.ops td {
+  text-align: right;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+table.ops th { font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; }
+table.ops td:first-child, table.ops th:first-child { text-align: left; font-family: var(--mono); }
+table.ops tr:last-child td { border-bottom: none; }
+.swatch {
+  display: inline-block;
+  width: 9px; height: 9px;
+  border-radius: 2px;
+  margin-right: 7px;
+  vertical-align: baseline;
+}
+.table-scroll { overflow-x: auto; }
+
+/* ---------- quiz ---------- */
+.quiz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
+  gap: 12px;
+}
+.quiz-card {
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface-2);
+  padding: 13px;
+  min-width: 0;
+}
+.quiz-card pre {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0 0 11px;
+  overflow-x: auto;
+  color: var(--ink);
+}
+.quiz-answer {
+  font-size: 13px;
+  color: var(--ink-soft);
+  border-top: 1px dashed var(--line);
+  padding-top: 10px;
+  margin-top: 2px;
+}
+.quiz-answer b { font-family: var(--mono); color: var(--accent); font-size: 13.5px; }
+
+/* ---------- misc ---------- */
+.row-between { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; }
+.section-gap { margin-top: 22px; }
+footer {
+  margin-top: 34px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+footer a { color: var(--accent); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12.5px; color: var(--ink-soft); margin-top: 12px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.key {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+}
+.key.L { background: var(--left-soft); color: var(--left); border-color: var(--left); }
+.key.R { background: var(--right-soft); color: var(--right); border-color: var(--right); }
+.key.W { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+.key.win { background: var(--win-soft); color: var(--win); border-color: var(--win); }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">17_DSA · topics 01 and 02</p>
+    <h1>DSA Visual Workbook</h1>
+    <p class="lede">
+      The algorithms from your notes, running one step at a time. Press play and
+      watch the fingers move, the window slide, and the step counter climb.
+    </p>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="Topic">
+    <button class="tab" role="tab" id="tab-bigo" aria-controls="view-bigo" aria-selected="true">Big O notation</button>
+    <button class="tab" role="tab" id="tab-arrays" aria-controls="view-arrays" aria-selected="false">Arrays &amp; strings</button>
+  </div>
+
+  <!-- ============================ BIG O ============================ -->
+  <section id="view-bigo" role="tabpanel" aria-labelledby="tab-bigo">
+    <div class="card">
+      <div class="card-head">
+        <h2>How the work grows</h2>
+        <span class="badge" id="n-badge">n = 20</span>
+      </div>
+      <div class="card-body">
+        <p style="margin:0 0 14px; color:var(--ink-soft); max-width:62ch;">
+          Every curve starts in the same corner. Drag the slider and watch which
+          ones stay flat and which ones leave the page. That gap is the whole
+          reason Big O exists.
+        </p>
+
+        <div class="chart-wrap">
+          <svg class="chart" id="growth" viewBox="0 0 720 340" role="img"
+               aria-label="Operation counts for six complexity classes as n grows"></svg>
+        </div>
+
+        <div class="controls" style="margin-top:6px;">
+          <div class="scrub">
+            <label for="n-slider" style="font-size:13px;color:var(--ink-soft);white-space:nowrap;">input size n</label>
+            <input type="range" id="n-slider" min="2" max="64" value="20" step="1">
+            <span class="step-count" id="n-read">20</span>
+          </div>
+        </div>
+
+        <div class="table-scroll section-gap">
+          <table class="ops">
+            <thead>
+              <tr>
+                <th>Complexity</th>
+                <th>Steps at n</th>
+                <th>If 1 step = 1 ns</th>
+                <th>Verdict</th>
+              </tr>
+            </thead>
+            <tbody id="ops-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card section-gap">
+      <div class="card-head"><h2>Name the complexity</h2></div>
+      <div class="card-body">
+        <p style="margin:0 0 14px; color:var(--ink-soft); max-width:62ch;">
+          Say your answer out loud first, then reveal. The reason matters more
+          than the letter.
+        </p>
+        <div class="quiz-grid" id="quiz"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= ARRAYS & STRINGS ========================= -->
+  <section id="view-arrays" role="tabpanel" aria-labelledby="tab-arrays" hidden>
+    <div class="picker" id="picker"></div>
+
+    <div class="card">
+      <div class="card-head">
+        <h2 id="algo-title">—</h2>
+        <span class="badge" id="algo-time">—</span>
+        <span class="badge space" id="algo-space">—</span>
+      </div>
+      <div class="card-body">
+        <div class="stage-grid">
+          <div class="slot">
+            <p class="panel-title" id="stage-label">The shelf</p>
+            <div class="track-scroll">
+              <div class="track" id="track"></div>
+            </div>
+
+            <div class="legend" id="legend"></div>
+            <div class="note" id="note">Press play.</div>
+
+            <div class="stats">
+              <div>
+                <span class="stat-label">Step</span>
+                <span class="stat-value" id="stat-step">0</span>
+              </div>
+              <div>
+                <span class="stat-label" id="work-label">Comparisons</span>
+                <span class="stat-value" id="stat-work">0</span>
+              </div>
+              <div>
+                <span class="stat-label">Answer</span>
+                <span class="stat-value" id="stat-answer">—</span>
+              </div>
+            </div>
+
+            <div class="controls">
+              <button class="btn primary" id="play">Play</button>
+              <button class="btn" id="prev" aria-label="Previous step">Back</button>
+              <button class="btn" id="next" aria-label="Next step">Step</button>
+              <button class="btn" id="reset">Reset</button>
+            </div>
+            <div class="controls">
+              <div class="scrub">
+                <input type="range" id="scrub" min="0" max="0" value="0" step="1" aria-label="Scrub through the steps">
+                <span class="step-count" id="scrub-read">0 / 0</span>
+              </div>
+              <div class="speed">
+                <label for="speed">Speed</label>
+                <input type="range" id="speed" min="1" max="5" value="3" step="1">
+              </div>
+            </div>
+
+            <div class="input-row" id="input-row">
+              <div class="field grow">
+                <label for="data-input" id="data-label">Data</label>
+                <input type="text" id="data-input" autocomplete="off" spellcheck="false">
+              </div>
+              <div class="field small" id="param-field">
+                <label for="param-input" id="param-label">k</label>
+                <input type="text" id="param-input" autocomplete="off" spellcheck="false">
+              </div>
+              <button class="btn" id="apply">Run it</button>
+            </div>
+            <div class="err" id="err"></div>
+          </div>
+
+          <div class="slot">
+            <p class="panel-title">The code, line by line</p>
+            <div class="code" id="code"></div>
+            <p class="why" id="why"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Built alongside the notes in
+    <a href="https://github.com/athira-vikraman/dsa-python">athira-vikraman/dsa-python</a>.
+    Every algorithm here matches the Python in that repo's <code>code/</code> and
+    <code>exercises/solutions.py</code> files.
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ========================================================================
+     TAB SWITCHING
+     ======================================================================== */
+  var tabs = [
+    { btn: document.getElementById("tab-bigo"), view: document.getElementById("view-bigo") },
+    { btn: document.getElementById("tab-arrays"), view: document.getElementById("view-arrays") }
+  ];
+  tabs.forEach(function (t) {
+    t.btn.addEventListener("click", function () {
+      tabs.forEach(function (o) {
+        var on = o === t;
+        o.btn.setAttribute("aria-selected", on ? "true" : "false");
+        o.view.hidden = !on;
+      });
+      if (t.btn.id === "tab-arrays") { stopPlaying(); }
+    });
+  });
+
+  /* ========================================================================
+     PART 1 - BIG O GROWTH CHART
+     ======================================================================== */
+  var CLASSES = [
+    { key: "o1",    name: "O(1)",        colorVar: "--ink-faint", f: function () { return 1; },                     verdict: "Instant, always" },
+    { key: "olog",  name: "O(log n)",    colorVar: "--accent",    f: function (n) { return Math.log2(n) || 1; },    verdict: "Excellent" },
+    { key: "on",    name: "O(n)",        colorVar: "--win",       f: function (n) { return n; },                    verdict: "Good" },
+    { key: "onlog", name: "O(n log n)",  colorVar: "--right",     f: function (n) { return n * (Math.log2(n) || 1); }, verdict: "Good - sorting lives here" },
+    { key: "on2",   name: "O(n\u00B2)",  colorVar: "--left",      f: function (n) { return n * n; },                verdict: "Only for small n" },
+    { key: "o2n",   name: "O(2\u207F)",  colorVar: "--bad",       f: function (n) { return Math.pow(2, n); },       verdict: "Rethink the approach" }
+  ];
+
+  function cssVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || "#888";
+  }
+
+  function humanTime(ns) {
+    if (!isFinite(ns)) { return "longer than the universe"; }
+    if (ns < 1e3) { return ns.toFixed(0) + " ns"; }
+    if (ns < 1e6) { return (ns / 1e3).toFixed(1) + " \u00B5s"; }
+    if (ns < 1e9) { return (ns / 1e6).toFixed(1) + " ms"; }
+    var s = ns / 1e9;
+    if (s < 60) { return s.toFixed(1) + " s"; }
+    if (s < 3600) { return (s / 60).toFixed(1) + " min"; }
+    if (s < 86400) { return (s / 3600).toFixed(1) + " hours"; }
+    if (s < 3.15e7) { return (s / 86400).toFixed(1) + " days"; }
+    var years = s / 3.15e7;
+    if (years > 1e12) { return "longer than the universe"; }
+    if (years > 1e6) { return years.toExponential(1) + " years"; }
+    return years.toFixed(1) + " years";
+  }
+
+  function humanCount(x) {
+    if (!isFinite(x)) { return "\u221E"; }
+    if (x >= 1e15) { return x.toExponential(1); }
+    return Math.round(x).toLocaleString("en-US");
+  }
+
+  var CH = { w: 720, h: 340, l: 52, r: 108, t: 18, b: 40 };
+
+  function drawChart(nMax) {
+    var svg = document.getElementById("growth");
+    var plotW = CH.w - CH.l - CH.r;
+    var plotH = CH.h - CH.t - CH.b;
+    // y is log10(ops + 1), so every class is visible on one picture
+    var maxOps = Math.max.apply(null, CLASSES.map(function (c) {
+      var v = c.f(nMax);
+      return isFinite(v) ? v : 1e18;
+    }));
+    var yTop = Math.max(1, Math.log10(maxOps + 1));
+    var x = function (n) { return CH.l + (n - 1) / Math.max(1, nMax - 1) * plotW; };
+    var y = function (ops) {
+      var v = Math.log10(Math.min(ops, 1e18) + 1) / yTop;
+      return CH.t + plotH - Math.max(0, Math.min(1, v)) * plotH;
+    };
+
+    var parts = [];
+
+    // horizontal grid lines at powers of ten
+    var decade = 0;
+    while (Math.log10(Math.pow(10, decade) + 1) <= yTop && decade <= 18) {
+      var gy = y(Math.pow(10, decade));
+      parts.push('<line class="ax-line" x1="' + CH.l + '" y1="' + gy.toFixed(1) +
+        '" x2="' + (CH.l + plotW) + '" y2="' + gy.toFixed(1) + '"></line>');
+      parts.push('<text class="ax-text" x="' + (CH.l - 8) + '" y="' + (gy + 3.5).toFixed(1) +
+        '" text-anchor="end">' + (decade === 0 ? "1" : "10^" + decade) + "</text>");
+      decade += Math.max(1, Math.round(yTop / 6));
+    }
+
+    // axes
+    parts.push('<line class="ax-line" x1="' + CH.l + '" y1="' + CH.t + '" x2="' + CH.l +
+      '" y2="' + (CH.t + plotH) + '"></line>');
+    parts.push('<line class="ax-line" x1="' + CH.l + '" y1="' + (CH.t + plotH) +
+      '" x2="' + (CH.l + plotW) + '" y2="' + (CH.t + plotH) + '"></line>');
+
+    // x ticks
+    [1, Math.round(nMax / 2), nMax].forEach(function (tick) {
+      if (tick < 1) { return; }
+      parts.push('<text class="ax-text" x="' + x(tick).toFixed(1) + '" y="' + (CH.t + plotH + 16) +
+        '" text-anchor="middle">' + tick + "</text>");
+    });
+    parts.push('<text class="ax-text" x="' + (CH.l + plotW / 2).toFixed(1) + '" y="' +
+      (CH.t + plotH + 33) + '" text-anchor="middle">input size n</text>');
+    parts.push('<text class="ax-text" x="' + CH.l + '" y="' + (CH.t - 6) +
+      '" text-anchor="start">steps (each line = 10x more)</text>');
+
+    // curves
+    CLASSES.forEach(function (c) {
+      var color = cssVar(c.colorVar);
+      var d = "";
+      for (var n = 1; n <= nMax; n++) {
+        var px = x(n), py = y(c.f(n));
+        d += (n === 1 ? "M" : "L") + px.toFixed(1) + " " + py.toFixed(1);
+      }
+      parts.push('<path class="curve" d="' + d + '" stroke="' + color + '"></path>');
+      var endY = y(c.f(nMax));
+      parts.push('<circle class="dot" cx="' + x(nMax).toFixed(1) + '" cy="' + endY.toFixed(1) +
+        '" r="3.5" fill="' + color + '"></circle>');
+      parts.push('<text class="curve-label" x="' + (x(nMax) + 9).toFixed(1) + '" y="' +
+        (endY + 3.5).toFixed(1) + '" fill="' + color + '">' + c.name + "</text>");
+    });
+
+    svg.innerHTML = parts.join("");
+  }
+
+  function drawOpsTable(n) {
+    var body = document.getElementById("ops-body");
+    body.innerHTML = CLASSES.map(function (c) {
+      var ops = c.f(n);
+      return "<tr>" +
+        '<td><span class="swatch" style="background:' + cssVar(c.colorVar) + '"></span>' + c.name + "</td>" +
+        "<td>" + humanCount(ops) + "</td>" +
+        "<td>" + humanTime(ops) + "</td>" +
+        '<td style="text-align:left;color:var(--ink-soft)">' + c.verdict + "</td>" +
+        "</tr>";
+    }).join("");
+  }
+
+  var nSlider = document.getElementById("n-slider");
+  function refreshBigO() {
+    var n = parseInt(nSlider.value, 10);
+    document.getElementById("n-read").textContent = n;
+    document.getElementById("n-badge").textContent = "n = " + n;
+    drawChart(n);
+    drawOpsTable(n);
+  }
+  nSlider.addEventListener("input", refreshBigO);
+
+  /* ---------------- quiz ---------------- */
+  var QUIZ = [
+    {
+      code: "for x in items:\n    print(x)",
+      answer: "O(n)",
+      why: "One loop over the input. Touch each box once."
+    },
+    {
+      code: "for x in items:\n    for y in items:\n        print(x, y)",
+      answer: "O(n\u00B2)",
+      why: "A loop inside a loop over the SAME list. Nested means multiply."
+    },
+    {
+      code: "for x in items:\n    for i in range(10):\n        print(x, i)",
+      answer: "O(n)",
+      why: "The inner loop runs 10 times, not n times. O(10n) = O(n). Nested does not automatically mean quadratic."
+    },
+    {
+      code: "i = 1\nwhile i < n:\n    i *= 2",
+      answer: "O(log n)",
+      why: "i doubles instead of adding one, so it reaches n in log\u2082(n) steps. Multiplying or dividing the loop variable means logarithmic."
+    },
+    {
+      code: "result = []\nfor x in items:\n    if x not in result:\n        result.append(x)",
+      answer: "O(n\u00B2)",
+      why: "`x not in result` is a hidden O(n) scan of a list. A set makes it O(1) and the whole thing O(n)."
+    },
+    {
+      code: "for x in list_a:\n    for y in list_b:\n        print(x, y)",
+      answer: "O(a \u00D7 b)",
+      why: "Two different inputs get two different letters. Calling both n would be wrong if one list has a million items and the other has two."
+    }
+  ];
+
+  document.getElementById("quiz").innerHTML = QUIZ.map(function (q, i) {
+    return '<div class="quiz-card">' +
+      "<pre>" + escapeHtml(q.code) + "</pre>" +
+      '<details><summary style="cursor:pointer;font-size:13px;color:var(--accent);">Reveal answer</summary>' +
+      '<div class="quiz-answer"><b>' + q.answer + "</b> &mdash; " + escapeHtml(q.why) + "</div></details>" +
+      "</div>";
+  }).join("");
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  /* ========================================================================
+     PART 2 - ALGORITHM FRAME GENERATORS
+
+     Each one returns { frames, answer, workLabel }. A frame is a photograph of
+     the algorithm at one moment: the values, where each finger is, which cells
+     are inside the window, what just happened and which line of code did it.
+     ======================================================================== */
+
+  function frame(values, o) {
+    o = o || {};
+    return {
+      values: values.slice(),
+      left: o.left, right: o.right, writer: o.writer, reader: o.reader,
+      winLo: o.winLo, winHi: o.winHi,
+      hit: o.hit || [], miss: o.miss || [], done: o.done || [],
+      note: o.note || "",
+      line: o.line || 0,
+      work: o.work || 0,
+      answer: o.answer === undefined ? null : o.answer,
+      verdict: o.verdict || null
+    };
+  }
+
+  var ALGOS = {};
+
+  /* ---------- 1. reverse, two pointers at the ends ---------- */
+  ALGOS.reverse = {
+    name: "Reverse a list",
+    tech: "two pointers \u00B7 ends",
+    time: "O(n) time", space: "O(1) space",
+    stageLabel: "The shelf",
+    dataLabel: "Numbers (comma separated)",
+    defaultData: "1, 2, 3, 4, 5",
+    param: null,
+    workLabel: "Swaps",
+    why: "<strong>Why O(1) space?</strong> We never build a second list. Two fingers walk toward each other swapping as they go, so the only extra memory is two numbers.",
+    code: [
+      "def reverse(items):",
+      "    left, right = 0, len(items) - 1",
+      "    while left < right:",
+      "        items[left], items[right] = items[right], items[left]",
+      "        left += 1",
+      "        right -= 1",
+      "    return items"
+    ],
+    run: function (items) {
+      var a = items.slice(), f = [], swaps = 0;
+      var l = 0, r = a.length - 1;
+      f.push(frame(a, { line: 2, left: l, right: r, note: "Put one finger at each end. L on box " + l + ", R on box " + r + "." }));
+      while (l < r) {
+        f.push(frame(a, { line: 3, left: l, right: r, hit: [l, r], work: swaps,
+          note: "L < R, so there is still work to do. Swap " + a[l] + " and " + a[r] + "." }));
+        var t = a[l]; a[l] = a[r]; a[r] = t; swaps++;
+        f.push(frame(a, { line: 4, left: l, right: r, hit: [l, r], work: swaps,
+          note: "Swapped. Now step both fingers inward." }));
+        l++; r--;
+      }
+      f.push(frame(a, { line: 7, work: swaps, answer: "[" + a.join(", ") + "]",
+        note: "The fingers met, so every pair has been swapped. Done in " + swaps +
+              " swaps \u2014 about half of n, which is still O(n)." }));
+      return { frames: f, answer: "[" + a.join(", ") + "]" };
+    }
+  };
+
+  /* ---------- 2. palindrome ---------- */
+  ALGOS.palindrome = {
+    name: "Palindrome check",
+    tech: "two pointers \u00B7 ends",
+    time: "O(n) time", space: "O(1) space",
+    stageLabel: "The word",
+    dataLabel: "A word",
+    defaultData: "racecar",
+    param: null,
+    workLabel: "Comparisons",
+    why: "<strong>Worth knowing:</strong> <code>word == word[::-1]</code> is also O(n), and in Python it is actually faster in seconds because it runs in C. Two fingers win on space (O(1), no copy) and can quit on the first mismatch.",
+    code: [
+      "def is_palindrome(word):",
+      "    left, right = 0, len(word) - 1",
+      "    while left < right:",
+      "        if word[left] != word[right]:",
+      "            return False",
+      "        left += 1",
+      "        right -= 1",
+      "    return True"
+    ],
+    run: function (chars) {
+      var a = chars.slice(), f = [], cmp = 0;
+      var l = 0, r = a.length - 1;
+      f.push(frame(a, { line: 2, left: l, right: r, note: "One finger at each end of the word." }));
+      while (l < r) {
+        cmp++;
+        var same = a[l] === a[r];
+        f.push(frame(a, {
+          line: 4, left: l, right: r, work: cmp,
+          hit: same ? [l, r] : [], miss: same ? [] : [l, r],
+          note: "'" + a[l] + "' vs '" + a[r] + "' \u2014 " + (same ? "they match. Step inward." :
+                "MISMATCH. We can stop right now, no need to look at the rest.")
+        }));
+        if (!same) {
+          f.push(frame(a, { line: 5, left: l, right: r, miss: [l, r], work: cmp, answer: "False", verdict: "false",
+            note: "Not a palindrome. Found out after only " + cmp + " comparison" + (cmp === 1 ? "" : "s") + "." }));
+          return { frames: f, answer: "False" };
+        }
+        l++; r--;
+      }
+      f.push(frame(a, { line: 8, work: cmp, answer: "True", verdict: "true",
+        note: "The fingers met in the middle with no mismatch, so it reads the same both ways. " +
+              cmp + " comparison" + (cmp === 1 ? "" : "s") + " for " + a.length + " letters \u2014 about n/2." }));
+      return { frames: f, answer: "True" };
+    }
+  };
+
+  /* ---------- 3. two sum on a sorted list ---------- */
+  ALGOS.twosum = {
+    name: "Two Sum (sorted)",
+    tech: "two pointers \u00B7 ends",
+    time: "O(n) time", space: "O(1) space",
+    stageLabel: "A SORTED shelf",
+    dataLabel: "Sorted numbers",
+    defaultData: "1, 3, 5, 7, 9, 11",
+    param: { label: "target", def: "14" },
+    workLabel: "Steps",
+    why: "<strong>Why sorted matters:</strong> moving L right can only make the sum bigger, and moving R left can only make it smaller. In an unsorted list that reasoning is worthless \u2014 use a set instead.",
+    code: [
+      "def two_sum_sorted(numbers, target):",
+      "    left, right = 0, len(numbers) - 1",
+      "    while left < right:",
+      "        total = numbers[left] + numbers[right]",
+      "        if total == target:",
+      "            return (numbers[left], numbers[right])",
+      "        elif total < target:",
+      "            left += 1",
+      "        else:",
+      "            right -= 1",
+      "    return None"
+    ],
+    run: function (nums, target) {
+      var a = nums.slice(), f = [], steps = 0;
+      var l = 0, r = a.length - 1;
+      f.push(frame(a, { line: 2, left: l, right: r, note: "Looking for two numbers that add to " + target + ". Fingers at both ends." }));
+      while (l < r) {
+        steps++;
+        var total = a[l] + a[r];
+        if (total === target) {
+          f.push(frame(a, { line: 5, left: l, right: r, hit: [l, r], work: steps,
+            answer: "(" + a[l] + ", " + a[r] + ")", verdict: "true",
+            note: a[l] + " + " + a[r] + " = " + total + " \u2014 FOUND IT, in " + steps + " steps." }));
+          return { frames: f, answer: "(" + a[l] + ", " + a[r] + ")" };
+        }
+        if (total < target) {
+          f.push(frame(a, { line: 7, left: l, right: r, work: steps,
+            note: a[l] + " + " + a[r] + " = " + total + ", too SMALL. I need a bigger number, and bigger numbers are to the right of L. Move L right." }));
+          l++;
+        } else {
+          f.push(frame(a, { line: 9, left: l, right: r, work: steps,
+            note: a[l] + " + " + a[r] + " = " + total + ", too BIG. I need a smaller number, and smaller numbers are to the left of R. Move R left." }));
+          r--;
+        }
+      }
+      f.push(frame(a, { line: 11, work: steps, answer: "None", verdict: "false",
+        note: "The fingers met without finding a pair, so no two numbers add to " + target + "." }));
+      return { frames: f, answer: "None" };
+    }
+  };
+
+  /* ---------- 4. move zeros, reader & writer ---------- */
+  ALGOS.movezeros = {
+    name: "Move zeros to the end",
+    tech: "two pointers \u00B7 reader & writer",
+    time: "O(n) time", space: "O(1) space",
+    stageLabel: "The shelf",
+    dataLabel: "Numbers (include some zeros)",
+    defaultData: "0, 1, 0, 3, 12",
+    param: null,
+    workLabel: "Items kept",
+    why: "<strong>The shape to memorise:</strong> the reader looks at every box; the writer only moves when something is worth keeping. Any problem that says remove, filter or squash <em>in place</em> is this shape.",
+    code: [
+      "def move_zeros_to_end(items):",
+      "    writer = 0",
+      "    for reader in range(len(items)):",
+      "        if items[reader] != 0:",
+      "            items[writer] = items[reader]",
+      "            writer += 1",
+      "    while writer < len(items):",
+      "        items[writer] = 0",
+      "        writer += 1",
+      "    return items"
+    ],
+    run: function (items) {
+      var a = items.slice(), f = [], kept = 0, w = 0;
+      f.push(frame(a, { line: 2, writer: 0, note: "The writer starts at box 0. The reader is about to walk the whole shelf." }));
+      for (var rd = 0; rd < a.length; rd++) {
+        if (a[rd] !== 0) {
+          f.push(frame(a, { line: 4, writer: w, reader: rd, hit: [rd], work: kept,
+            note: "Reader sees " + a[rd] + ", which is not a zero. KEEP it \u2014 write it at the writer's box." }));
+          a[w] = a[rd]; w++; kept++;
+          f.push(frame(a, { line: 5, writer: w, reader: rd, hit: [w - 1], work: kept,
+            note: "Written at box " + (w - 1) + ". The writer moves on; the reader carries on too." }));
+        } else {
+          f.push(frame(a, { line: 4, writer: w, reader: rd, miss: [rd], work: kept,
+            note: "Reader sees a 0 \u2014 skip it. The writer stays exactly where it is." }));
+        }
+      }
+      var padFrom = w;
+      while (w < a.length) {
+        a[w] = 0;
+        f.push(frame(a, { line: 8, writer: w, hit: [w], work: kept,
+          note: "Everything worth keeping is packed at the front. Fill box " + w + " with a zero." }));
+        w++;
+      }
+      f.push(frame(a, { line: 10, work: kept, answer: "[" + a.join(", ") + "]",
+        note: "Done. " + kept + " items kept in their original order, boxes " + padFrom +
+              " onward filled with zeros \u2014 and we never built a second list." }));
+      return { frames: f, answer: "[" + a.join(", ") + "]" };
+    }
+  };
+
+  /* ---------- 5. fixed sliding window ---------- */
+  ALGOS.fixedwindow = {
+    name: "Max sum of k in a row",
+    tech: "sliding window \u00B7 fixed size",
+    time: "O(n) time", space: "O(1) space",
+    stageLabel: "The shelf, with a window on it",
+    dataLabel: "Numbers",
+    defaultData: "2, 1, 5, 1, 3, 2",
+    param: { label: "k", def: "3" },
+    workLabel: "Slides",
+    why: "<strong>The one line to remember:</strong> <code>window_sum += joiner - leaver</code>. Re-adding the whole window every time would be O(n\u00D7k); changing only the two numbers that moved makes it O(n), whatever k is.",
+    code: [
+      "def max_sum_of_k(numbers, k):",
+      "    window_sum = sum(numbers[:k])",
+      "    best = window_sum",
+      "    for i in range(k, len(numbers)):",
+      "        window_sum += numbers[i] - numbers[i - k]",
+      "        best = max(best, window_sum)",
+      "    return best"
+    ],
+    run: function (nums, k) {
+      var a = nums.slice(), f = [], slides = 0;
+      var sum = 0, i;
+      for (i = 0; i < k; i++) { sum += a[i]; }
+      var best = sum;
+      f.push(frame(a, { line: 2, winLo: 0, winHi: k - 1, work: 0,
+        note: "Build the first window: " + a.slice(0, k).join(" + ") + " = " + sum + ". That is the best so far." }));
+      for (i = k; i < a.length; i++) {
+        slides++;
+        var joiner = a[i], leaver = a[i - k], before = sum;
+        sum += joiner - leaver;
+        var isBest = sum > best;
+        if (isBest) { best = sum; }
+        f.push(frame(a, {
+          line: 5, winLo: i - k + 1, winHi: i, hit: [i], miss: [], work: slides,
+          note: "Slide: " + leaver + " leaves on the left, " + joiner + " joins on the right. " +
+                before + " \u2212 " + leaver + " + " + joiner + " = " + sum +
+                (isBest ? " \u2014 new best!" : " (best is still " + best + ")")
+        }));
+      }
+      f.push(frame(a, { line: 7, work: slides, answer: String(best),
+        note: "Biggest window sum is " + best + ". We touched each number twice \u2014 once joining, once leaving \u2014 so this is O(n)." }));
+      return { frames: f, answer: String(best) };
+    }
+  };
+
+  /* ---------- 6. growing sliding window ---------- */
+  ALGOS.growwindow = {
+    name: "Longest stretch, no repeats",
+    tech: "sliding window \u00B7 growing",
+    time: "O(n) time", space: "O(k) space",
+    stageLabel: "The word, with a window on it",
+    dataLabel: "A word or phrase (no spaces needed)",
+    defaultData: "abcabcbb",
+    param: null,
+    workLabel: "Window size",
+    why: "<strong>Why is this O(n) with a loop inside a loop?</strong> Because <code>left</code> only ever moves forward, at most n times across the whole run. right moves n times, left moves n times: 2n steps.",
+    code: [
+      "def longest_without_repeats(text):",
+      "    seen = set()",
+      "    left = 0",
+      "    best = 0",
+      "    for right in range(len(text)):",
+      "        while text[right] in seen:",
+      "            seen.remove(text[left])",
+      "            left += 1",
+      "        seen.add(text[right])",
+      "        best = max(best, right - left + 1)",
+      "    return best"
+    ],
+    run: function (chars) {
+      var a = chars.slice(), f = [];
+      var seen = {}, left = 0, best = 0;
+      f.push(frame(a, { line: 3, winLo: 0, winHi: -1, work: 0,
+        note: "The window starts empty. `right` will grow it; `left` will shrink it when a letter repeats." }));
+      for (var right = 0; right < a.length; right++) {
+        while (seen[a[right]]) {
+          f.push(frame(a, {
+            line: 7, winLo: left, winHi: right - 1, miss: [right], work: right - left,
+            note: "'" + a[right] + "' is already inside the window \u2014 the rule is broken. Drop '" +
+                  a[left] + "' from the left and try again."
+          }));
+          delete seen[a[left]];
+          left++;
+        }
+        seen[a[right]] = true;
+        var size = right - left + 1;
+        var isBest = size > best;
+        if (isBest) { best = size; }
+        f.push(frame(a, {
+          line: 10, winLo: left, winHi: right, hit: [right], work: size,
+          note: "Added '" + a[right] + "'. The window is now \"" + a.slice(left, right + 1).join("") +
+                "\", size " + size + (isBest ? " \u2014 new best!" : " (best is still " + best + ")")
+        }));
+      }
+      f.push(frame(a, { line: 11, work: best, answer: String(best),
+        note: "The longest stretch with no repeated letter is " + best + " long." }));
+      return { frames: f, answer: String(best) };
+    }
+  };
+
+  var ORDER = ["reverse", "palindrome", "twosum", "movezeros", "fixedwindow", "growwindow"];
+
+  /* ========================================================================
+     THE PLAYER
+     ======================================================================== */
+  var el = {
+    picker: document.getElementById("picker"),
+    title: document.getElementById("algo-title"),
+    time: document.getElementById("algo-time"),
+    space: document.getElementById("algo-space"),
+    stageLabel: document.getElementById("stage-label"),
+    track: document.getElementById("track"),
+    legend: document.getElementById("legend"),
+    note: document.getElementById("note"),
+    code: document.getElementById("code"),
+    why: document.getElementById("why"),
+    statStep: document.getElementById("stat-step"),
+    statWork: document.getElementById("stat-work"),
+    statAnswer: document.getElementById("stat-answer"),
+    workLabel: document.getElementById("work-label"),
+    play: document.getElementById("play"),
+    prev: document.getElementById("prev"),
+    next: document.getElementById("next"),
+    reset: document.getElementById("reset"),
+    scrub: document.getElementById("scrub"),
+    scrubRead: document.getElementById("scrub-read"),
+    speed: document.getElementById("speed"),
+    dataInput: document.getElementById("data-input"),
+    dataLabel: document.getElementById("data-label"),
+    paramField: document.getElementById("param-field"),
+    paramInput: document.getElementById("param-input"),
+    paramLabel: document.getElementById("param-label"),
+    apply: document.getElementById("apply"),
+    err: document.getElementById("err")
+  };
+
+  var state = { key: "reverse", frames: [], at: 0, timer: null, isText: false };
+
+  function currentAlgo() { return ALGOS[state.key]; }
+
+  function buildPicker() {
+    el.picker.innerHTML = ORDER.map(function (k) {
+      var a = ALGOS[k];
+      return '<button class="pick" data-key="' + k + '" aria-pressed="false">' +
+        '<span class="pick-name">' + a.name + "</span>" +
+        '<span class="pick-tech">' + a.tech + "</span></button>";
+    }).join("");
+    Array.prototype.forEach.call(el.picker.querySelectorAll(".pick"), function (b) {
+      b.addEventListener("click", function () { selectAlgo(b.getAttribute("data-key")); });
+    });
+  }
+
+  function markPicker() {
+    Array.prototype.forEach.call(el.picker.querySelectorAll(".pick"), function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute("data-key") === state.key ? "true" : "false");
+    });
+  }
+
+  function parseData(algo, raw) {
+    var isText = algo === ALGOS.palindrome || algo === ALGOS.growwindow;
+    if (isText) {
+      var letters = raw.replace(/\s+/g, "").split("");
+      if (letters.length === 0) { throw new Error("Type at least one letter."); }
+      if (letters.length > 24) { throw new Error("Keep it to 24 letters so every box fits on screen."); }
+      return letters;
+    }
+    var nums = raw.split(/[,\s]+/).filter(function (s) { return s.length; }).map(function (s) {
+      var v = Number(s);
+      if (!isFinite(v)) { throw new Error('"' + s + '" is not a number.'); }
+      return v;
+    });
+    if (nums.length === 0) { throw new Error("Type at least one number."); }
+    if (nums.length > 20) { throw new Error("Keep it to 20 numbers so every box fits on screen."); }
+    return nums;
+  }
+
+  function buildFrames() {
+    var algo = currentAlgo();
+    var values = parseData(algo, el.dataInput.value);
+    var result;
+
+    if (algo === ALGOS.twosum) {
+      var target = Number(el.paramInput.value);
+      if (!isFinite(target)) { throw new Error("The target must be a number."); }
+      var sorted = values.slice().sort(function (a, b) { return a - b; });
+      var wasUnsorted = sorted.some(function (v, i) { return v !== values[i]; });
+      if (wasUnsorted) {
+        el.dataInput.value = sorted.join(", ");
+        el.err.textContent = "Two pointers needs sorted data, so the list has been sorted for you.";
+      }
+      result = algo.run(sorted, target);
+    } else if (algo === ALGOS.fixedwindow) {
+      var k = Number(el.paramInput.value);
+      if (!Number.isInteger(k) || k < 1) { throw new Error("k must be a whole number, 1 or more."); }
+      if (k > values.length) { throw new Error("k (" + k + ") is bigger than the list (" + values.length + " numbers)."); }
+      result = algo.run(values, k);
+    } else {
+      result = algo.run(values);
+    }
+
+    state.frames = result.frames;
+    state.at = 0;
+    el.scrub.max = String(Math.max(0, state.frames.length - 1));
+    el.scrub.value = "0";
+  }
+
+  function renderFrame() {
+    var fr = state.frames[state.at];
+    if (!fr) { return; }
+    var algo = currentAlgo();
+
+    var cells = fr.values.map(function (v, i) {
+      var cls = ["cell"];
+      if (fr.winLo !== undefined && fr.winHi !== undefined && i >= fr.winLo && i <= fr.winHi) { cls.push("in-window"); }
+      if (fr.left === i) { cls.push("at-left"); }
+      if (fr.right === i) { cls.push("at-right"); }
+      if (fr.hit.indexOf(i) !== -1) { cls.push("hit"); }
+      if (fr.miss.indexOf(i) !== -1) { cls.push("miss"); }
+      if (fr.done.indexOf(i) !== -1) { cls.push("done"); }
+
+      var marks = "";
+      if (fr.left === i) { marks += '<span class="mark L">L</span>'; }
+      if (fr.right === i) { marks += '<span class="mark R">R</span>'; }
+      if (fr.writer === i) { marks += '<span class="mark W">W</span>'; }
+      if (fr.reader === i) { marks += '<span class="mark r">R\u2192</span>'; }
+
+      return "<div>" +
+        '<div class="' + cls.join(" ") + '">' + escapeHtml(String(v)) + "</div>" +
+        '<div class="idx">' + i + "</div>" +
+        '<div class="marks">' + marks + "</div>" +
+        "</div>";
+    }).join("");
+    el.track.innerHTML = cells;
+
+    el.note.textContent = fr.note;
+    el.note.className = "note" + (fr.verdict ? " verdict-" + fr.verdict : "");
+    el.statStep.textContent = state.at;
+    el.statWork.textContent = fr.work;
+    el.statAnswer.textContent = fr.answer === null ? "\u2014" : fr.answer;
+    el.workLabel.textContent = algo.workLabel;
+
+    el.scrub.value = String(state.at);
+    el.scrubRead.textContent = state.at + " / " + (state.frames.length - 1);
+    el.prev.disabled = state.at === 0;
+    el.next.disabled = state.at >= state.frames.length - 1;
+
+    Array.prototype.forEach.call(el.code.children, function (lineEl, i) {
+      lineEl.classList.toggle("active", i + 1 === fr.line);
+    });
+  }
+
+  function renderCode() {
+    var algo = currentAlgo();
+    el.code.innerHTML = algo.code.map(function (line, i) {
+      return '<div class="code-line"><span class="ln">' + (i + 1) + "</span>" +
+        "<span>" + escapeHtml(line) + "</span></div>";
+    }).join("");
+  }
+
+  function renderLegend() {
+    var algo = currentAlgo();
+    var bits = [];
+    if (algo.tech.indexOf("ends") !== -1) {
+      bits.push('<span><span class="key L">L</span> left finger</span>');
+      bits.push('<span><span class="key R">R</span> right finger</span>');
+    }
+    if (algo.tech.indexOf("reader") !== -1) {
+      bits.push('<span><span class="key W">W</span> writer &mdash; keeps the good stuff</span>');
+      bits.push('<span><span class="key">R\u2192</span> reader &mdash; looks at every box</span>');
+    }
+    if (algo.tech.indexOf("window") !== -1) {
+      bits.push('<span><span class="key win">&nbsp;&nbsp;</span> inside the window</span>');
+    }
+    bits.push('<span style="color:var(--ink-faint)">small grey numbers are box numbers, starting at 0</span>');
+    el.legend.innerHTML = bits.join("");
+  }
+
+  function selectAlgo(key) {
+    stopPlaying();
+    state.key = key;
+    var algo = currentAlgo();
+    markPicker();
+
+    el.title.textContent = algo.name;
+    el.time.textContent = algo.time;
+    el.space.textContent = algo.space;
+    el.stageLabel.textContent = algo.stageLabel;
+    el.dataLabel.textContent = algo.dataLabel;
+    el.dataInput.value = algo.defaultData;
+    el.why.innerHTML = algo.why;
+
+    if (algo.param) {
+      el.paramField.hidden = false;
+      el.paramLabel.textContent = algo.param.label;
+      el.paramInput.value = algo.param.def;
+    } else {
+      el.paramField.hidden = true;
+    }
+
+    renderCode();
+    renderLegend();
+    el.err.textContent = "";
+    try {
+      buildFrames();
+      renderFrame();
+    } catch (e) {
+      el.err.textContent = e.message;
+    }
+  }
+
+  function stopPlaying() {
+    if (state.timer) { clearInterval(state.timer); state.timer = null; }
+    el.play.textContent = "Play";
+  }
+
+  function delay() {
+    var speeds = { 1: 1500, 2: 950, 3: 620, 4: 380, 5: 200 };
+    return speeds[el.speed.value] || 620;
+  }
+
+  function startPlaying() {
+    if (state.at >= state.frames.length - 1) { state.at = 0; }
+    el.play.textContent = "Pause";
+    state.timer = setInterval(function () {
+      if (state.at >= state.frames.length - 1) { stopPlaying(); return; }
+      state.at++;
+      renderFrame();
+    }, delay());
+  }
+
+  el.play.addEventListener("click", function () {
+    if (state.timer) { stopPlaying(); } else { startPlaying(); }
+  });
+  el.next.addEventListener("click", function () {
+    stopPlaying();
+    if (state.at < state.frames.length - 1) { state.at++; renderFrame(); }
+  });
+  el.prev.addEventListener("click", function () {
+    stopPlaying();
+    if (state.at > 0) { state.at--; renderFrame(); }
+  });
+  el.reset.addEventListener("click", function () {
+    stopPlaying();
+    state.at = 0;
+    renderFrame();
+  });
+  el.scrub.addEventListener("input", function () {
+    stopPlaying();
+    state.at = parseInt(el.scrub.value, 10) || 0;
+    renderFrame();
+  });
+  el.speed.addEventListener("input", function () {
+    if (state.timer) { stopPlaying(); startPlaying(); }
+  });
+  el.apply.addEventListener("click", function () {
+    stopPlaying();
+    el.err.textContent = "";
+    try {
+      buildFrames();
+      renderFrame();
+    } catch (e) {
+      el.err.textContent = e.message;
+    }
+  });
+  [el.dataInput, el.paramInput].forEach(function (input) {
+    input.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter") { ev.preventDefault(); el.apply.click(); }
+    });
+  });
+
+  document.addEventListener("keydown", function (ev) {
+    if (document.getElementById("view-arrays").hidden) { return; }
+    var tag = (ev.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea") { return; }
+    if (ev.key === "ArrowRight") { ev.preventDefault(); el.next.click(); }
+    if (ev.key === "ArrowLeft") { ev.preventDefault(); el.prev.click(); }
+    if (ev.key === " ") { ev.preventDefault(); el.play.click(); }
+  });
+
+  /* ---------------- boot ---------------- */
+  buildPicker();
+  selectAlgo("reverse");
+  refreshBigO();
+
+  if (window.matchMedia) {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    var onThemeChange = function () { refreshBigO(); };
+    if (mq.addEventListener) { mq.addEventListener("change", onThemeChange); }
+    else if (mq.addListener) { mq.addListener(onThemeChange); }
+  }
+}());
+</script>

@@ -42,6 +42,19 @@ cat README.md
 python3 run_all.py        # run every demo and the full test suite
 ```
 
+### See it move first
+
+[`visualizer.html`](visualizer.html) is an interactive page covering topics 01
+and 02. Open it in a browser (double-click the file, or
+`python3 -m http.server` in this folder) and you can:
+
+- drag a slider and watch the six complexity curves pull apart
+- step through six array and string algorithms one frame at a time, with the
+  fingers, the window, the running code line and the step counter all visible
+
+Reading the note and then watching the same algorithm run is the fastest way
+to make a technique stick.
+
 Big O comes first on purpose: it is the measuring tool. Once you can say
 "this is O(n log n) time and O(n) space" about your own code, every later
 topic has something to compare against.

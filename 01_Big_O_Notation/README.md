@@ -5,6 +5,9 @@ A complete, self-contained module: **notes to read**, **code to run**,
 
 No third-party packages. Python 3.8+ and the standard library only.
 
+> **Watch it run:** [`../visualizer.html`](../visualizer.html) is an interactive
+> page with the growth curves and the "name the complexity" drills. Open it in a browser alongside these notes.
+
 ---
 
 ## Start here
