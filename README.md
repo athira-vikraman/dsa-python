@@ -44,13 +44,19 @@ python3 run_all.py        # run every demo and the full test suite
 
 ### See it move first
 
-[`visualizer.html`](visualizer.html) is an interactive page covering topics 01
-and 02. Open it in a browser (double-click the file, or
-`python3 -m http.server` in this folder) and you can:
+[`visualizer.html`](visualizer.html) is an interactive page covering both
+topics. Open it in a browser (double-click the file, or `python3 -m http.server`
+in this folder) and you can:
 
 - drag a slider and watch the six complexity curves pull apart
-- step through six array and string algorithms one frame at a time, with the
-  fingers, the window, the running code line and the step counter all visible
+- **step through 26 classic questions** one frame at a time &mdash; searching,
+  the four sorts including merge sort, every two-pointer shape, both sliding
+  windows, and the hashing problems they compete with
+- search the full index by problem, technique or complexity
+
+Each frame shows the data as numbered boxes, marks where every pointer is,
+shades the window, highlights the line of Python currently running, and says
+in one sentence what just happened.
 
 Reading the note and then watching the same algorithm run is the fastest way
 to make a technique stick.
