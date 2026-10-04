@@ -354,7 +354,7 @@ footer a { color: var(--accent); }
     <p class="eyebrow">17_DSA &middot; topics 01 and 02</p>
     <h1>DSA Visual Workbook</h1>
     <p class="lede">
-      Twenty-six classic questions, each one running a step at a time. Press play
+      Thirty-one classic questions, each one running a step at a time. Press play
       and watch the fingers move, the window slide, the pivot fall into place and
       the step counter climb.
     </p>
@@ -363,7 +363,7 @@ footer a { color: var(--accent); }
   <div class="tabs" role="tablist" aria-label="Section">
     <button class="tab" role="tab" id="tab-bigo" aria-controls="view-bigo" aria-selected="true">Big O notation</button>
     <button class="tab" role="tab" id="tab-run" aria-controls="view-run" aria-selected="false">Run a problem</button>
-    <button class="tab" role="tab" id="tab-index" aria-controls="view-index" aria-selected="false">All 26 questions</button>
+    <button class="tab" role="tab" id="tab-index" aria-controls="view-index" aria-selected="false">All 31 questions</button>
   </div>
 
   <!-- ============================ BIG O ============================ -->
@@ -399,6 +399,28 @@ footer a { color: var(--accent); }
               <tr><th>Complexity</th><th>Steps at n</th><th>If 1 step = 1 ns</th><th>Verdict</th></tr>
             </thead>
             <tbody id="ops-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card section-gap">
+      <div class="card-head">
+        <h2>The nine sorts, side by side</h2>
+        <span class="count-chip">click any row to watch it run</span>
+      </div>
+      <div class="card-body">
+        <p style="margin:0 0 14px; color:var(--ink-soft); max-width:64ch;">
+          The first six work by <strong>comparing pairs</strong>, and no sort that
+          does that can beat O(n log n). The last three never compare anything &mdash;
+          they count or bucket instead, which is how they slip under that limit.
+        </p>
+        <div class="table-scroll">
+          <table class="index" id="sorts-table">
+            <thead>
+              <tr><th>Sort</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th><th>Use it when</th></tr>
+            </thead>
+            <tbody id="sorts-body"></tbody>
           </table>
         </div>
       </div>
@@ -701,6 +723,7 @@ footer a { color: var(--accent); }
   }
 
   var ALGOS = {};
+  var DEFAULT_MARK_LABEL = { L: "L", R: "R", W: "W", RD: "R\u2192", M: "mid", I: "i", J: "j" };
   var GROUPS = [
     "Searching &amp; sorting",
     "Two pointers &mdash; from the ends",
@@ -811,7 +834,7 @@ footer a { color: var(--accent); }
       "        swapped = False",
       "        for j in range(n - i - 1):",
       "            if items[j] > items[j + 1]:",
-      "                items[j], items[j+1] = items[j+1], items[j]",
+      "                items[j], items[j + 1] = items[j + 1], items[j]",
       "                swapped = True",
       "        if not swapped:",
       "            break",
@@ -915,7 +938,7 @@ footer a { color: var(--accent); }
       "        j = i - 1",
       "        while j >= 0 and items[j] > card:",
       "            items[j + 1] = items[j]",
-      "            j -= 1",
+      "            j = j - 1",
       "        items[j + 1] = card",
       "    return items"
     ],
@@ -966,13 +989,23 @@ footer a { color: var(--accent); }
       "    return merge(left, right)",
       "",
       "def merge(left, right):",
-      "    out, i, j = [], 0, 0",
+      "    out = []",
+      "    i = 0",
+      "    j = 0",
       "    while i < len(left) and j < len(right):",
       "        if left[i] <= right[j]:",
-      "            out.append(left[i]); i += 1",
+      "            out.append(left[i])",
+      "            i = i + 1",
       "        else:",
-      "            out.append(right[j]); j += 1",
-      "    return out + left[i:] + right[j:]"
+      "            out.append(right[j])",
+      "            j = j + 1",
+      "    while i < len(left):",
+      "        out.append(left[i])",
+      "        i = i + 1",
+      "    while j < len(right):",
+      "        out.append(right[j])",
+      "        j = j + 1",
+      "    return out"
     ],
     run: function (input) {
       var a = input.slice(), f = [], placed = 0;
@@ -1004,7 +1037,7 @@ footer a { color: var(--accent); }
           var val = takeLeft ? left[i] : right[j];
           out.push(val);
           a[k] = val; placed++;
-          f.push(frame(a, { line: takeLeft ? 13 : 15, lo: lo, hi: hi, hit: [k], work: placed,
+          f.push(frame(a, { line: takeLeft ? 15 : 18, lo: lo, hi: hi, hit: [k], work: placed,
             aux: "left [" + left.slice(i + (takeLeft ? 1 : 0)).join(", ") + "]  right [" + right.slice(j + (takeLeft ? 0 : 1)).join(", ") + "]  → built [" + out.join(", ") + "]",
             note: (takeLeft ? left[i] : right[j]) + " is the smaller front value (" + left[i] + " vs " + right[j] + "), so it goes into box " + k + "." }));
           if (takeLeft) { i++; } else { j++; }
@@ -1012,14 +1045,14 @@ footer a { color: var(--accent); }
         }
         while (i < left.length) {
           a[k] = left[i]; out.push(left[i]); placed++;
-          f.push(frame(a, { line: 16, lo: lo, hi: hi, hit: [k], work: placed,
+          f.push(frame(a, { line: 21, lo: lo, hi: hi, hit: [k], work: placed,
             aux: "built [" + out.join(", ") + "]",
             note: "The right half is empty, so the rest of the left half (" + left[i] + ") just follows on." }));
           i++; k++;
         }
         while (j < right.length) {
           a[k] = right[j]; out.push(right[j]); placed++;
-          f.push(frame(a, { line: 16, lo: lo, hi: hi, hit: [k], work: placed,
+          f.push(frame(a, { line: 24, lo: lo, hi: hi, hit: [k], work: placed,
             aux: "built [" + out.join(", ") + "]",
             note: "The left half is empty, so the rest of the right half (" + right[j] + ") just follows on." }));
           j++; k++;
@@ -1266,22 +1299,25 @@ footer a { color: var(--accent); }
     param: null, workLabel: "Triplets found", sorts: true,
     why: "<strong>Today's lesson with one loop on top.</strong> Sort first (O(n log n)). Then fix the first number with a loop and run two pointers on the rest to find the other two. One loop × one linear scan = O(n²) &mdash; far better than the O(n³) of three nested loops.",
     code: [
-      "def three_sum(numbers):",
-      "    numbers.sort()",
+      "def three_sum(nums):",
+      "    nums.sort()",
       "    found = []",
-      "    for i in range(len(numbers) - 2):",
-      "        if i > 0 and numbers[i] == numbers[i-1]:",
+      "    for i in range(len(nums) - 2):",
+      "        if i > 0 and nums[i] == nums[i - 1]:",
       "            continue",
-      "        left, right = i + 1, len(numbers) - 1",
+      "        left = i + 1",
+      "        right = len(nums) - 1",
       "        while left < right:",
-      "            total = numbers[i] + numbers[left] + numbers[right]",
+      "            total = nums[i] + nums[left] + nums[right]",
       "            if total == 0:",
-      "                found.append((numbers[i], numbers[left], numbers[right]))",
-      "                left += 1; right -= 1",
+      "                triplet = (nums[i], nums[left], nums[right])",
+      "                found.append(triplet)",
+      "                left = left + 1",
+      "                right = right - 1",
       "            elif total < 0:",
-      "                left += 1",
+      "                left = left + 1",
       "            else:",
-      "                right -= 1",
+      "                right = right - 1",
       "    return found"
     ],
     run: function (input) {
@@ -1302,17 +1338,17 @@ footer a { color: var(--accent); }
           var total = a[i] + a[l] + a[r];
           if (total === 0) {
             found.push("(" + a[i] + ", " + a[l] + ", " + a[r] + ")");
-            f.push(frame(a, { line: 11, marks: { I: i, L: l, R: r }, hit: [i, l, r], work: found.length,
+            f.push(frame(a, { line: 13, marks: { I: i, L: l, R: r }, hit: [i, l, r], work: found.length,
               aux: "found: " + found.join("  "),
               note: a[i] + " + " + a[l] + " + " + a[r] + " = 0 — a triplet! Move both fingers inward and keep looking." }));
             l++; r--;
           } else if (total < 0) {
-            f.push(frame(a, { line: 14, marks: { I: i, L: l, R: r }, work: found.length,
+            f.push(frame(a, { line: 17, marks: { I: i, L: l, R: r }, work: found.length,
               aux: "found: " + (found.length ? found.join("  ") : "none yet"),
               note: a[i] + " + " + a[l] + " + " + a[r] + " = " + total + ", below zero. Move L right for a bigger number." }));
             l++;
           } else {
-            f.push(frame(a, { line: 16, marks: { I: i, L: l, R: r }, work: found.length,
+            f.push(frame(a, { line: 19, marks: { I: i, L: l, R: r }, work: found.length,
               aux: "found: " + (found.length ? found.join("  ") : "none yet"),
               note: a[i] + " + " + a[l] + " + " + a[r] + " = " + total + ", above zero. Move R left for a smaller number." }));
             r--;
@@ -1320,7 +1356,7 @@ footer a { color: var(--accent); }
         }
       }
       var ans = found.length ? found.join(" ") : "none";
-      f.push(frame(a, { line: 17, work: found.length, answer: found.length ? String(found.length) : "0",
+      f.push(frame(a, { line: 20, work: found.length, answer: found.length ? String(found.length) : "0",
         aux: "found: " + ans,
         note: found.length ? "Found " + found.length + " triplet" + (found.length === 1 ? "" : "s") + ": " + ans
                            : "No three numbers add to zero." }));
@@ -1470,14 +1506,22 @@ footer a { color: var(--accent); }
     why: "<strong>Do not re-sort.</strong> <code>sorted(a + b)</code> is O((n+m) log(n+m)) and throws away the fact that both lists are already in order. The next smallest value is always at one of the two fronts, so one pass is enough. This is the merge step inside merge sort.",
     code: [
       "def merge_sorted(a, b):",
-      "    out, i, j = [], 0, 0",
+      "    out = []",
+      "    i = 0",
+      "    j = 0",
       "    while i < len(a) and j < len(b):",
       "        if a[i] <= b[j]:",
-      "            out.append(a[i]); i += 1",
+      "            out.append(a[i])",
+      "            i = i + 1",
       "        else:",
-      "            out.append(b[j]); j += 1",
-      "    out.extend(a[i:])",
-      "    out.extend(b[j:])",
+      "            out.append(b[j])",
+      "            j = j + 1",
+      "    while i < len(a):",
+      "        out.append(a[i])",
+      "        i = i + 1",
+      "    while j < len(b):",
+      "        out.append(b[j])",
+      "        j = j + 1",
       "    return out"
     ],
     run: function (a, b) {
@@ -1492,24 +1536,24 @@ footer a { color: var(--accent); }
         var takeA = a[i] <= b[j];
         if (takeA) { out.push(a[i]); } else { out.push(b[j]); }
         placed++;
-        f.push(frame(a, { line: takeA ? 5 : 7, marks: { I: i }, hit: takeA ? [i] : [], work: placed, aux: aux(),
+        f.push(frame(a, { line: takeA ? 7 : 10, marks: { I: i }, hit: takeA ? [i] : [], work: placed, aux: aux(),
           note: "A's front is " + a[i] + ", B's front is " + b[j] + ". " + (takeA ? a[i] + " from A" : b[j] + " from B") +
                 " is smaller (or equal), so it goes out next." }));
         if (takeA) { i++; } else { j++; }
       }
       while (i < a.length) {
         out.push(a[i]); placed++;
-        f.push(frame(a, { line: 8, marks: { I: i }, hit: [i], work: placed, aux: aux(),
+        f.push(frame(a, { line: 13, marks: { I: i }, hit: [i], work: placed, aux: aux(),
           note: "B is used up, so the rest of A is already in order — tip it straight on." }));
         i++;
       }
       while (j < b.length) {
         out.push(b[j]); placed++;
-        f.push(frame(a, { line: 9, work: placed, aux: aux(),
+        f.push(frame(a, { line: 16, work: placed, aux: aux(),
           note: "A is used up, so the rest of B follows on." }));
         j++;
       }
-      f.push(frame(a, { line: 10, work: placed, answer: "[" + out.join(", ") + "]", aux: "out = [" + out.join(", ") + "]",
+      f.push(frame(a, { line: 18, work: placed, answer: "[" + out.join(", ") + "]", aux: "out = [" + out.join(", ") + "]",
         note: "Merged in " + placed + " placements — each value moved exactly once. That is O(n + m)." }));
       return { frames: f, answer: "[" + out.join(", ") + "]" };
     }
@@ -1606,12 +1650,17 @@ footer a { color: var(--accent); }
     why: "<strong>A window does not have to hold a sum.</strong> Anything you can update with '+1 for the joiner, −1 for the leaver' can slide: a count, a total, a frequency table. That is the real pattern.",
     code: [
       "def max_vowels(text, k):",
-      "    vowels = set('aeiou')",
-      "    count = sum(1 for c in text[:k] if c in vowels)",
+      "    vowels = \"aeiou\"",
+      "    count = 0",
+      "    for letter in text[:k]:",
+      "        if letter in vowels:",
+      "            count = count + 1",
       "    best = count",
       "    for i in range(k, len(text)):",
-      "        if text[i] in vowels: count += 1",
-      "        if text[i - k] in vowels: count -= 1",
+      "        if text[i] in vowels:",
+      "            count = count + 1",
+      "        if text[i - k] in vowels:",
+      "            count = count - 1",
       "        best = max(best, count)",
       "    return best"
     ],
@@ -1619,7 +1668,7 @@ footer a { color: var(--accent); }
       var V = "aeiouAEIOU", f = [], i, count = 0;
       for (i = 0; i < k; i++) { if (V.indexOf(a[i]) !== -1) { count++; } }
       var best = count;
-      f.push(frame(a, { line: 4, lo: 0, hi: k - 1, work: best,
+      f.push(frame(a, { line: 7, lo: 0, hi: k - 1, work: best,
         note: "First window \"" + a.slice(0, k).join("") + "\" holds " + count + " vowel" + (count === 1 ? "" : "s") + "." }));
       for (i = k; i < a.length; i++) {
         var joinIsV = V.indexOf(a[i]) !== -1, leaveIsV = V.indexOf(a[i - k]) !== -1;
@@ -1627,12 +1676,12 @@ footer a { color: var(--accent); }
         if (leaveIsV) { count--; }
         var isBest = count > best;
         if (isBest) { best = count; }
-        f.push(frame(a, { line: 8, lo: i - k + 1, hi: i, hit: [i], miss: [i - k], work: best,
+        f.push(frame(a, { line: 13, lo: i - k + 1, hi: i, hit: [i], miss: [i - k], work: best,
           note: "'" + a[i - k] + "' leaves" + (leaveIsV ? " (a vowel, so −1)" : "") + ", '" + a[i] + "' joins" +
                 (joinIsV ? " (a vowel, so +1)" : "") + ". Window \"" + a.slice(i - k + 1, i + 1).join("") +
                 "\" has " + count + (isBest ? " — new best!" : ", best is still " + best) }));
       }
-      f.push(frame(a, { line: 9, work: best, answer: String(best),
+      f.push(frame(a, { line: 14, work: best, answer: String(best),
         note: "The best any " + k + " letters in a row can do is " + best + " vowels." }));
       return { frames: f, answer: String(best) };
     }
@@ -1702,14 +1751,18 @@ footer a { color: var(--accent); }
       "def shortest_subarray(numbers, target):",
       "    left = 0",
       "    window_sum = 0",
-      "    best = float('inf')",
+      "    best = len(numbers) + 1",
       "    for right in range(len(numbers)):",
-      "        window_sum += numbers[right]",
+      "        window_sum = window_sum + numbers[right]",
       "        while window_sum >= target:",
-      "            best = min(best, right - left + 1)",
-      "            window_sum -= numbers[left]",
-      "            left += 1",
-      "    return 0 if best == float('inf') else best"
+      "            length = right - left + 1",
+      "            if length < best:",
+      "                best = length",
+      "            window_sum = window_sum - numbers[left]",
+      "            left = left + 1",
+      "    if best == len(numbers) + 1:",
+      "        return 0",
+      "    return best"
     ],
     run: function (a, target) {
       var f = [], left = 0, sum = 0, best = Infinity;
@@ -1734,7 +1787,7 @@ footer a { color: var(--accent); }
         }
       }
       var ans = best === Infinity ? 0 : best;
-      f.push(frame(a, { line: 11, work: ans, answer: String(ans), verdict: ans ? "true" : "false",
+      f.push(frame(a, { line: 15, work: ans, answer: String(ans), verdict: ans ? "true" : "false",
         note: ans ? "The shortest run reaching " + target + " is " + ans + " number" + (ans === 1 ? "" : "s") + " long."
                   : "No run of these numbers reaches " + target + ", so the answer is 0." }));
       return { frames: f, answer: String(ans) };
@@ -1755,13 +1808,14 @@ footer a { color: var(--accent); }
       "    left = 0",
       "    best = 0",
       "    for right in range(len(text)):",
-      "        c = text[right]",
-      "        counts[c] = counts.get(c, 0) + 1",
+      "        letter = text[right]",
+      "        counts[letter] = counts.get(letter, 0) + 1",
       "        while len(counts) > k:",
-      "            counts[text[left]] -= 1",
-      "            if counts[text[left]] == 0:",
-      "                del counts[text[left]]",
-      "            left += 1",
+      "            leaving = text[left]",
+      "            counts[leaving] = counts[leaving] - 1",
+      "            if counts[leaving] == 0:",
+      "                del counts[leaving]",
+      "            left = left + 1",
       "        best = max(best, right - left + 1)",
       "    return best"
     ],
@@ -1784,7 +1838,7 @@ footer a { color: var(--accent); }
           counts[out]--;
           var gone = counts[out] === 0;
           if (gone) { delete counts[out]; }
-          f.push(frame(a, { line: gone ? 11 : 9, lo: left + 1, hi: right, miss: [left], work: right - left, aux: aux(),
+          f.push(frame(a, { line: gone ? 12 : 10, lo: left + 1, hi: right, miss: [left], work: right - left, aux: aux(),
             note: "Too many different letters. Drop '" + out + "' from the left" +
                   (gone ? " — that was its last copy, so the letter leaves the window entirely."
                         : " — but another '" + out + "' is still inside, so the letter stays.") }));
@@ -1793,11 +1847,11 @@ footer a { color: var(--accent); }
         var size = right - left + 1;
         var isBest = size > best;
         if (isBest) { best = size; }
-        f.push(frame(a, { line: 13, lo: left, hi: right, work: size, aux: aux(),
+        f.push(frame(a, { line: 14, lo: left, hi: right, work: size, aux: aux(),
           note: "Window \"" + a.slice(left, right + 1).join("") + "\" is legal at size " + size +
                 (isBest ? " — new best!" : ", best is still " + best) }));
       }
-      f.push(frame(a, { line: 14, work: best, answer: String(best),
+      f.push(frame(a, { line: 15, work: best, answer: String(best),
         note: "Longest run with at most " + k + " different letters is " + best + " long." }));
       return { frames: f, answer: String(best) };
     }
@@ -1903,7 +1957,7 @@ footer a { color: var(--accent); }
       "    for c in b:",
       "        if c not in counts:",
       "            return False",
-      "        counts[c] -= 1",
+      "        counts[c] = counts[c] - 1",
       "        if counts[c] == 0:",
       "            del counts[c]",
       "    return len(counts) == 0"
@@ -1997,8 +2051,365 @@ footer a { color: var(--accent); }
     }
   };
 
+
+  /* ---------- quick sort ---------- */
+  ALGOS.quickSort = {
+    name: "Quick sort", group: 0, tech: "pivot &amp; partition",
+    time: "O(n log n) average", space: "O(log n) space",
+    ask: "Pick a pivot, push everything smaller to its left, then repeat on each side.",
+    tags: "sort quick pivot partition divide conquer nlogn",
+    stageLabel: "The shelf", dataLabel: "Numbers", defaultData: "5, 2, 9, 1, 7, 3",
+    param: null, workLabel: "Swaps",
+    markLabels: { M: "pivot", I: "i", J: "j" },
+    why: "<strong>Why is the worst case O(n²)?</strong> If the pivot is always the biggest or smallest value, each round shrinks the job by only one instead of halving it. Picking a random or middle pivot makes that almost impossible, which is why quick sort is usually the fastest sort in practice despite the scary worst case.",
+    code: [
+      "def quick_sort(items, low, high):",
+      "    if low >= high:",
+      "        return",
+      "    pivot = items[high]",
+      "    i = low",
+      "    for j in range(low, high):",
+      "        if items[j] < pivot:",
+      "            items[i], items[j] = items[j], items[i]",
+      "            i = i + 1",
+      "    items[i], items[high] = items[high], items[i]",
+      "    quick_sort(items, low, i - 1)",
+      "    quick_sort(items, i + 1, high)"
+    ],
+    run: function (input) {
+      var a = input.slice(), f = [], swaps = 0;
+      f.push(frame(a, { line: 1, note: "Quick sort: choose one value as the pivot, split everything around it, then sort each side." }));
+      function sort(low, high) {
+        if (low >= high) {
+          if (low === high) {
+            f.push(frame(a, { line: 3, lo: low, hi: high, done: [low],
+              note: "One box on its own is already in the right place." }));
+          }
+          return;
+        }
+        var pivot = a[high], i = low;
+        f.push(frame(a, { line: 4, lo: low, hi: high, marks: { M: high, I: i }, work: swaps,
+          note: "Working on boxes " + low + " to " + high + ". Take the last value, " + pivot + ", as the pivot." }));
+        for (var j = low; j < high; j++) {
+          var smaller = a[j] < pivot;
+          f.push(frame(a, { line: 7, lo: low, hi: high, marks: { M: high, I: i, J: j },
+            hit: smaller ? [j] : [], miss: smaller ? [] : [j], work: swaps,
+            note: a[j] + (smaller ? " is smaller than the pivot " + pivot + ", so it belongs on the left. Swap it to box " + i + "."
+                                  : " is not smaller than the pivot " + pivot + ", so leave it where it is.") }));
+          if (smaller) {
+            if (i !== j) { var t = a[i]; a[i] = a[j]; a[j] = t; swaps++; }
+            i++;
+            f.push(frame(a, { line: 9, lo: low, hi: high, marks: { M: high, I: i, J: j }, hit: [i - 1], work: swaps,
+              note: "The small-values zone now reaches box " + (i - 1) + "." }));
+          }
+        }
+        var t2 = a[i]; a[i] = a[high]; a[high] = t2; swaps++;
+        f.push(frame(a, { line: 10, lo: low, hi: high, hit: [i], done: [i], work: swaps,
+          note: "Drop the pivot " + pivot + " into box " + i + ". Everything left of it is smaller, everything right is bigger — so this box is finished forever." }));
+        sort(low, i - 1);
+        sort(i + 1, high);
+      }
+      sort(0, a.length - 1);
+      f.push(frame(a, { line: 12, work: swaps, answer: "[" + a.join(", ") + "]",
+        note: "Sorted in " + swaps + " swaps. Each round roughly halves the work, which is where the log n comes from." }));
+      return { frames: f, answer: "[" + a.join(", ") + "]" };
+    }
+  };
+
+  /* ---------- heap sort ---------- */
+  ALGOS.heapSort = {
+    name: "Heap sort", group: 0, tech: "heap",
+    time: "O(n log n) time", space: "O(1) space",
+    ask: "Turn the list into a heap so the biggest value is always on top, then pull it off one at a time.",
+    tags: "sort heap sift down tree nlogn in place priority",
+    stageLabel: "The shelf, read as a tree", dataLabel: "Numbers", defaultData: "5, 2, 9, 1, 7",
+    param: null, workLabel: "Swaps",
+    markLabels: { I: "parent", L: "child", R: "child" },
+    why: "<strong>The array IS the tree.</strong> Box 0 is the top. The children of box p live at boxes 2p+1 and 2p+2. No pointers, no nodes — just arithmetic. That is why heap sort needs <em>no</em> extra memory, unlike merge sort's O(n).",
+    code: [
+      "def heap_sort(items):",
+      "    n = len(items)",
+      "    for parent in range(n // 2 - 1, -1, -1):",
+      "        sift_down(items, parent, n)",
+      "    for end in range(n - 1, 0, -1):",
+      "        items[0], items[end] = items[end], items[0]",
+      "        sift_down(items, 0, end)",
+      "    return items",
+      "",
+      "def sift_down(items, parent, size):",
+      "    big = parent",
+      "    left = 2 * parent + 1",
+      "    right = 2 * parent + 2",
+      "    if left < size and items[left] > items[big]:",
+      "        big = left",
+      "    if right < size and items[right] > items[big]:",
+      "        big = right",
+      "    if big != parent:",
+      "        items[parent], items[big] = items[big], items[parent]",
+      "        sift_down(items, big, size)"
+    ],
+    run: function (input) {
+      var a = input.slice(), f = [], swaps = 0, n = a.length;
+      function tree(p) {
+        var l = 2 * p + 1, r = 2 * p + 2;
+        return "box " + p + " (" + a[p] + ")  → children: " +
+          (l < n ? "box " + l + " (" + a[l] + ")" : "none") + ", " +
+          (r < n ? "box " + r + " (" + a[r] + ")" : "none");
+      }
+      function siftDown(parent, size, sortedTail) {
+        var biggest = parent, l = 2 * parent + 1, r = 2 * parent + 2;
+        var marks = { I: parent };
+        if (l < size) { marks.L = l; }
+        if (r < size) { marks.R = r; }
+        f.push(frame(a, { line: 11, marks: marks, done: sortedTail, work: swaps, aux: tree(parent),
+          note: "Look at box " + parent + " (" + a[parent] + ") and its children. A heap needs the parent to be the biggest of the three." }));
+        if (l < size && a[l] > a[biggest]) { biggest = l; }
+        if (r < size && a[r] > a[biggest]) { biggest = r; }
+        if (biggest === parent) {
+          f.push(frame(a, { line: 18, marks: marks, done: sortedTail, work: swaps, aux: tree(parent),
+            note: "The parent " + a[parent] + " is already the biggest. Nothing to do here." }));
+          return;
+        }
+        var t = a[parent]; a[parent] = a[biggest]; a[biggest] = t; swaps++;
+        f.push(frame(a, { line: 19, marks: { I: biggest }, hit: [parent, biggest], done: sortedTail, work: swaps,
+          aux: tree(biggest),
+          note: "Child " + a[parent] + " was bigger than parent " + a[biggest] + ", so swap them. " +
+                "The small value has dropped to box " + biggest + " \u2014 check its children next." }));
+        siftDown(biggest, size, sortedTail);
+      }
+
+      f.push(frame(a, { line: 2, aux: "read as a tree: box 0 is the top, children of box p are 2p+1 and 2p+2",
+        note: "Step 1: turn the list into a heap, so that every parent is bigger than its children." }));
+      for (var p = Math.floor(n / 2) - 1; p >= 0; p--) {
+        siftDown(p, n, []);
+      }
+      f.push(frame(a, { line: 4, hit: [0], work: swaps, aux: tree(0),
+        note: "It is a heap now. The biggest value, " + a[0] + ", has floated to box 0." }));
+
+      for (var end = n - 1; end > 0; end--) {
+        var tail = [];
+        for (var q = end; q < n; q++) { tail.push(q); }
+        var t2 = a[0]; a[0] = a[end]; a[end] = t2; swaps++;
+        tail = [];
+        for (var q2 = end; q2 < n; q2++) { tail.push(q2); }
+        f.push(frame(a, { line: 6, hit: [end], done: tail, work: swaps, aux: tree(0),
+          note: "Swap the top value " + a[end] + " to box " + end + ". That box is finished — it holds a value that nothing left can beat." }));
+        siftDown(0, end, tail);
+      }
+      f.push(frame(a, { line: 8, work: swaps, answer: "[" + a.join(", ") + "]",
+        note: "Sorted in place with " + swaps + " swaps, using no extra list at all. Each sift-down walks one path down the tree: log n steps, n times." }));
+      return { frames: f, answer: "[" + a.join(", ") + "]" };
+    }
+  };
+
+  /* ---------- counting sort ---------- */
+  ALGOS.countingSort = {
+    name: "Counting sort", group: 0, tech: "counting, no comparisons",
+    time: "O(n + k) time", space: "O(k) space",
+    ask: "Sort small whole numbers by <b>tallying</b> them instead of comparing them.",
+    tags: "counting sort non comparison tally linear k range integers",
+    stageLabel: "The shelf", dataLabel: "Whole numbers, 0 to 20", defaultData: "4, 2, 2, 8, 3, 3, 1",
+    param: null, workLabel: "Values written",
+    why: "<strong>This beats O(n log n) — how?</strong> The n log n limit only applies to sorts that work by <em>comparing pairs</em>. This one never compares anything; it just counts. The catch is k, the size of the number range: counting sort on values up to a million would need a million counters, so it only wins when the numbers are small and tightly packed.",
+    validate: function (values) {
+      values.forEach(function (v) {
+        if (!Number.isInteger(v) || v < 0 || v > 20) {
+          throw new Error("Counting sort needs whole numbers from 0 to 20 (one counter per possible value).");
+        }
+      });
+    },
+    code: [
+      "def counting_sort(items):",
+      "    biggest = max(items)",
+      "    counts = [0] * (biggest + 1)",
+      "    for value in items:",
+      "        counts[value] = counts[value] + 1",
+      "    out = 0",
+      "    for value in range(len(counts)):",
+      "        for _ in range(counts[value]):",
+      "            items[out] = value",
+      "            out = out + 1",
+      "    return items"
+    ],
+    run: function (input) {
+      var a = input.slice(), f = [], written = 0;
+      var biggest = Math.max.apply(null, a);
+      var counts = new Array(biggest + 1).fill(0);
+      function aux() {
+        return "counts: " + counts.map(function (c, v) { return v + "→" + c; }).join("  ");
+      }
+      f.push(frame(a, { line: 3, aux: aux(),
+        note: "The biggest value is " + biggest + ", so make " + (biggest + 1) + " counters, one for every possible value from 0 to " + biggest + ". All start at zero." }));
+      for (var i = 0; i < a.length; i++) {
+        counts[a[i]]++;
+        f.push(frame(a, { line: 5, marks: { RD: i }, hit: [i], work: written, aux: aux(),
+          note: "Box " + i + " holds " + a[i] + ", so add one to counter " + a[i] + ". It is now " + counts[a[i]] + ". No comparing — just tallying." }));
+      }
+      f.push(frame(a, { line: 6, aux: aux(), work: written,
+        note: "Every value is tallied. Now walk the counters from 0 upward and write each value out as many times as it was counted." }));
+      var out = 0;
+      for (var v = 0; v < counts.length; v++) {
+        if (counts[v] === 0) {
+          f.push(frame(a, { line: 7, work: written, aux: aux(),
+            note: "Counter " + v + " is zero, so no " + v + " appears in the list. Skip it." }));
+          continue;
+        }
+        for (var c = 0; c < counts[v]; c++) {
+          a[out] = v; written++;
+          f.push(frame(a, { line: 9, hit: [out], work: written, aux: aux(),
+            note: "Counter " + v + " says " + v + " appears " + counts[v] + " time" + (counts[v] === 1 ? "" : "s") +
+                  ". Write " + v + " into box " + out + "." }));
+          out++;
+        }
+      }
+      f.push(frame(a, { line: 11, work: written, answer: "[" + a.join(", ") + "]",
+        note: "Sorted without a single comparison. One pass to count (n) plus one walk through the counters (k) = O(n + k)." }));
+      return { frames: f, answer: "[" + a.join(", ") + "]" };
+    }
+  };
+
+  /* ---------- radix sort ---------- */
+  ALGOS.radixSort = {
+    name: "Radix sort", group: 0, tech: "digit by digit, no comparisons",
+    time: "O(d × n) time", space: "O(n) space",
+    ask: "Sort numbers by looking at one digit at a time: ones, then tens, then hundreds.",
+    tags: "radix sort digits buckets non comparison linear lsd",
+    stageLabel: "The shelf", dataLabel: "Whole numbers", defaultData: "170, 45, 75, 90, 24, 2, 66",
+    param: null, workLabel: "Passes done",
+    validate: function (values) {
+      values.forEach(function (v) {
+        if (!Number.isInteger(v) || v < 0 || v > 9999) {
+          throw new Error("Radix sort here handles whole numbers from 0 to 9999.");
+        }
+      });
+    },
+    why: "<strong>Why start with the LAST digit?</strong> Because each pass keeps the order from the pass before it. Sorting by ones first, then tens, means two numbers with the same tens digit are still correctly ordered by their ones. Sorting from the left instead would wreck that.",
+    code: [
+      "def radix_sort(items):",
+      "    place = 1",
+      "    while max(items) // place > 0:",
+      "        buckets = [[] for _ in range(10)]",
+      "        for value in items:",
+      "            digit = (value // place) % 10",
+      "            buckets[digit].append(value)",
+      "        out = 0",
+      "        for bucket in buckets:",
+      "            for value in bucket:",
+      "                items[out] = value",
+      "                out = out + 1",
+      "        place = place * 10",
+      "    return items"
+    ],
+    run: function (input) {
+      var a = input.slice(), f = [], passes = 0;
+      var biggest = Math.max.apply(null, a);
+      var place = 1;
+      f.push(frame(a, { line: 2, note: "Sort by the ones digit first, then the tens, then the hundreds. Each pass keeps the order of the one before it." }));
+      while (Math.floor(biggest / place) > 0) {
+        var name = place === 1 ? "ones" : place === 10 ? "tens" : place === 100 ? "hundreds" : "thousands";
+        var buckets = [];
+        for (var b = 0; b < 10; b++) { buckets.push([]); }
+        function auxB() {
+          return buckets.map(function (bk, d) { return d + ":[" + bk.join(",") + "]"; }).join("  ");
+        }
+        f.push(frame(a, { line: 4, work: passes, aux: auxB(),
+          note: "Pass " + (passes + 1) + ": sort by the " + name + " digit. Ten empty buckets, one per digit 0 to 9." }));
+        for (var i = 0; i < a.length; i++) {
+          var digit = Math.floor(a[i] / place) % 10;
+          buckets[digit].push(a[i]);
+          f.push(frame(a, { line: 7, marks: { RD: i }, hit: [i], work: passes, aux: auxB(),
+            note: a[i] + " has " + name + " digit " + digit + ", so it drops into bucket " + digit + "." }));
+        }
+        var out = 0;
+        for (var d2 = 0; d2 < 10; d2++) {
+          for (var q = 0; q < buckets[d2].length; q++) {
+            a[out] = buckets[d2][q];
+            f.push(frame(a, { line: 11, hit: [out], work: passes, aux: auxB(),
+              note: "Tip the buckets back out in order, 0 first. " + a[out] + " goes to box " + out + "." }));
+            out++;
+          }
+        }
+        passes++;
+        place = place * 10;
+        f.push(frame(a, { line: 13, work: passes, aux: "after the " + name + " pass: [" + a.join(", ") + "]",
+          note: "The list is now sorted by its " + name + " digit" + (place <= biggest ? ". Move to the next digit left." : ". That was the last digit.") }));
+      }
+      f.push(frame(a, { line: 14, work: passes, answer: "[" + a.join(", ") + "]",
+        note: "Sorted in " + passes + " pass" + (passes === 1 ? "" : "es") + " — one per digit — and never once compared two numbers." }));
+      return { frames: f, answer: "[" + a.join(", ") + "]" };
+    }
+  };
+
+  /* ---------- bucket sort ---------- */
+  ALGOS.bucketSort = {
+    name: "Bucket sort", group: 0, tech: "spread into buckets",
+    time: "O(n + k) average", space: "O(n) space",
+    ask: "Spread values into a few buckets by size, sort each small bucket, then pour them out in order.",
+    tags: "bucket sort spread distribute non comparison average linear",
+    stageLabel: "The shelf", dataLabel: "Whole numbers", defaultData: "29, 25, 3, 49, 9, 37, 21, 43",
+    param: null, workLabel: "Values poured",
+    validate: function (values) {
+      values.forEach(function (v) {
+        if (!Number.isInteger(v) || v < 0) { throw new Error("Bucket sort here needs whole numbers of 0 or more."); }
+      });
+    },
+    why: "<strong>It is only fast if the values spread evenly.</strong> With five buckets and evenly scattered numbers, each bucket holds about n/5 items and sorting them is cheap. If every value lands in the same bucket you are just running the inner sort on the whole list, and the advantage vanishes.",
+    code: [
+      "def bucket_sort(items):",
+      "    buckets = [[], [], [], [], []]",
+      "    biggest = max(items) + 1",
+      "    for value in items:",
+      "        index = value * 5 // biggest",
+      "        buckets[index].append(value)",
+      "    out = 0",
+      "    for bucket in buckets:",
+      "        bucket.sort()",
+      "        for value in bucket:",
+      "            items[out] = value",
+      "            out = out + 1",
+      "    return items"
+    ],
+    run: function (input) {
+      var a = input.slice(), f = [], poured = 0;
+      var biggest = Math.max.apply(null, a) + 1;
+      var buckets = [[], [], [], [], []];
+      function auxB() {
+        return buckets.map(function (bk, i) { return "b" + i + ":[" + bk.join(",") + "]"; }).join("  ");
+      }
+      f.push(frame(a, { line: 2, aux: auxB(),
+        note: "Five empty buckets. Bucket 0 takes the smallest fifth of the range, bucket 4 the biggest fifth." }));
+      for (var i = 0; i < a.length; i++) {
+        var idx = Math.floor(a[i] * 5 / biggest);
+        buckets[idx].push(a[i]);
+        f.push(frame(a, { line: 6, marks: { RD: i }, hit: [i], work: poured, aux: auxB(),
+          note: a[i] + " out of a range up to " + (biggest - 1) + " belongs in bucket " + idx + "." }));
+      }
+      var out = 0;
+      for (var b = 0; b < 5; b++) {
+        if (!buckets[b].length) {
+          f.push(frame(a, { line: 8, work: poured, aux: auxB(), note: "Bucket " + b + " is empty. Skip it." }));
+          continue;
+        }
+        buckets[b].sort(function (x, y) { return x - y; });
+        f.push(frame(a, { line: 9, work: poured, aux: auxB(),
+          note: "Sort bucket " + b + " on its own: [" + buckets[b].join(", ") + "]. It is tiny, so this costs almost nothing." }));
+        for (var q = 0; q < buckets[b].length; q++) {
+          a[out] = buckets[b][q]; poured++;
+          f.push(frame(a, { line: 11, hit: [out], work: poured, aux: auxB(),
+            note: "Pour " + a[out] + " from bucket " + b + " into box " + out + "." }));
+          out++;
+        }
+      }
+      f.push(frame(a, { line: 13, work: poured, answer: "[" + a.join(", ") + "]",
+        note: "Sorted. The buckets did the hard part: each one only had to sort a handful of values." }));
+      return { frames: f, answer: "[" + a.join(", ") + "]" };
+    }
+  };
+
   var ORDER = [
-    "linearSearch", "binarySearch", "bubbleSort", "selectionSort", "insertionSort", "mergeSort",
+    "linearSearch", "binarySearch",
+    "bubbleSort", "selectionSort", "insertionSort", "mergeSort", "quickSort", "heapSort",
+    "countingSort", "radixSort", "bucketSort",
     "reverse", "palindrome", "twoSumSorted", "sortedSquares", "containerWater", "threeSum",
     "moveZeros", "removeDuplicates", "removeElement", "mergeTwoSorted",
     "maxSumK", "averagesK", "maxVowels",
@@ -2072,6 +2483,8 @@ footer a { color: var(--accent); }
     var values = parseList(el["data-input"].value, a.text, limit);
     var notice = "";
 
+    if (a.validate) { a.validate(values); }
+
     if (a.sorts) {
       var sorted = values.slice().sort(function (x, y) { return x - y; });
       if (sorted.some(function (v, i) { return v !== values[i]; })) {
@@ -2141,10 +2554,10 @@ footer a { color: var(--accent); }
         if (fr.miss.indexOf(i) !== -1) { cls.push("miss"); }
         if (fr.done.indexOf(i) !== -1) { cls.push("done"); }
         var marks = "";
+        var custom = a.markLabels || {};
         ["L", "R", "W", "RD", "M", "I", "J"].forEach(function (m) {
           if (fr.marks[m] === i) {
-            var label = m === "RD" ? "R→" : m === "M" ? "mid" : m === "I" ? "i" : m === "J" ? "j" : m;
-            marks += '<span class="mark ' + m + '">' + label + "</span>";
+            marks += '<span class="mark ' + m + '">' + (custom[m] || DEFAULT_MARK_LABEL[m]) + "</span>";
           }
         });
         return "<div><div class=\"" + cls.join(" ") + "\">" + escapeHtml(String(v)) + "</div>" +
@@ -2212,9 +2625,23 @@ footer a { color: var(--accent); }
     if (a.id === "binarySearch") { bits.push('<span><span class="key M">mid</span> the middle guess</span>'); }
     if (a.id === "selectionSort") { bits.push('<span><span class="key M">mid</span> smallest found so far</span>'); }
     if (a.id === "threeSum") { bits.push('<span><span class="key I">i</span> the fixed first number</span>'); }
-    if (a.tech.indexOf("window") !== -1 || a.id === "mergeSort" || a.id === "binarySearch") {
+    if (a.id === "quickSort") {
+      bits.push('<span><span class="key M">pivot</span> the value everything is split around</span>');
+      bits.push('<span><span class="key I">i</span> end of the smaller-than-pivot zone</span>');
+      bits.push('<span><span class="key J">j</span> the value being checked</span>');
+    }
+    if (a.id === "heapSort") {
+      bits.push('<span><span class="key I">parent</span> box p</span>');
+      bits.push('<span><span class="key L">child</span> box 2p+1</span>');
+      bits.push('<span><span class="key R">child</span> box 2p+2</span>');
+    }
+    if (a.id === "countingSort" || a.id === "radixSort" || a.id === "bucketSort") {
+      bits.push('<span style="color:var(--ink-soft)">the line underneath is the live tally or buckets</span>');
+    }
+    if (a.tech.indexOf("window") !== -1 || a.id === "mergeSort" || a.id === "quickSort" || a.id === "binarySearch") {
       bits.push('<span><span class="key win">&nbsp;&nbsp;</span> ' +
-        (a.id === "mergeSort" ? "the piece being worked on" : a.id === "binarySearch" ? "still in play" : "inside the window") + "</span>");
+        (a.id === "mergeSort" || a.id === "quickSort" ? "the piece being worked on"
+         : a.id === "binarySearch" ? "still in play" : "inside the window") + "</span>");
     }
     bits.push('<span style="color:var(--ink-faint)">small grey numbers are box numbers, starting at 0</span>');
     el.legend.innerHTML = bits.join("");
@@ -2279,10 +2706,15 @@ footer a { color: var(--accent); }
       var n = 6 + Math.floor(Math.random() * 3);
       var nums = [];
       for (var j = 0; j < n; j++) {
-        nums.push(a.id === "containerWater" || a.id === "smallestSubarray"
-          ? 1 + Math.floor(Math.random() * 9)
-          : (a.id === "moveZeros" ? (Math.random() < 0.4 ? 0 : 1 + Math.floor(Math.random() * 9))
-                                  : Math.floor(Math.random() * 20) - (a.id === "threeSum" || a.id === "sortedSquares" ? 8 : 0)));
+        var v;
+        if (a.id === "containerWater" || a.id === "smallestSubarray") { v = 1 + Math.floor(Math.random() * 9); }
+        else if (a.id === "moveZeros") { v = Math.random() < 0.4 ? 0 : 1 + Math.floor(Math.random() * 9); }
+        else if (a.id === "countingSort") { v = Math.floor(Math.random() * 9); }
+        else if (a.id === "radixSort") { v = Math.floor(Math.random() * 400); }
+        else if (a.id === "bucketSort") { v = Math.floor(Math.random() * 50); }
+        else if (a.id === "threeSum" || a.id === "sortedSquares") { v = Math.floor(Math.random() * 20) - 8; }
+        else { v = Math.floor(Math.random() * 20); }
+        nums.push(v);
       }
       if (a.sorts) { nums.sort(function (x, y) { return x - y; }); }
       el["data-input"].value = nums.join(", ");
@@ -2360,8 +2792,53 @@ footer a { color: var(--accent); }
     el["index-search"].focus();
   });
 
+  /* ---------------- the sorting comparison table ---------------- */
+  var SORTS = [
+    { id: "bubbleSort",    best: "O(n)",        avg: "O(n\u00B2)",     worst: "O(n\u00B2)",     space: "O(1)", kind: "compares",
+      when: "Never, really. It is here because it is the easiest one to read." },
+    { id: "selectionSort", best: "O(n\u00B2)",  avg: "O(n\u00B2)",     worst: "O(n\u00B2)",     space: "O(1)", kind: "compares",
+      when: "Writing is expensive: it makes at most n swaps." },
+    { id: "insertionSort", best: "O(n)",        avg: "O(n\u00B2)",     worst: "O(n\u00B2)",     space: "O(1)", kind: "compares",
+      when: "The list is small or almost sorted. Python uses it inside Timsort." },
+    { id: "mergeSort",     best: "O(n log n)",  avg: "O(n log n)", worst: "O(n log n)", space: "O(n)", kind: "compares",
+      when: "You need a guarantee, or a stable sort, and can spare the memory." },
+    { id: "quickSort",     best: "O(n log n)",  avg: "O(n log n)", worst: "O(n\u00B2)",     space: "O(log n)", kind: "compares",
+      when: "General purpose. Usually the fastest in practice." },
+    { id: "heapSort",      best: "O(n log n)",  avg: "O(n log n)", worst: "O(n log n)", space: "O(1)", kind: "compares",
+      when: "You need the n log n guarantee AND no extra memory." },
+    { id: "countingSort",  best: "O(n + k)",    avg: "O(n + k)",   worst: "O(n + k)",   space: "O(k)", kind: "counts",
+      when: "Whole numbers in a small range, like exam marks 0 to 100." },
+    { id: "radixSort",     best: "O(d \u00D7 n)", avg: "O(d \u00D7 n)", worst: "O(d \u00D7 n)", space: "O(n)", kind: "counts",
+      when: "Lots of numbers with few digits each, or fixed-length strings." },
+    { id: "bucketSort",    best: "O(n + k)",    avg: "O(n + k)",   worst: "O(n\u00B2)",     space: "O(n)", kind: "counts",
+      when: "Values spread evenly across a known range." }
+  ];
+
+  function buildSortsTable() {
+    var rows = "";
+    ["compares", "counts"].forEach(function (kind) {
+      rows += '<tr class="group-row"><td colspan="6">' +
+        (kind === "compares" ? "Comparison sorts \u2014 O(n log n) is the speed limit"
+                             : "Non-comparison sorts \u2014 they count instead, so the limit does not apply") +
+        "</td></tr>";
+      SORTS.filter(function (r) { return r.kind === kind; }).forEach(function (r) {
+        var a = ALGOS[r.id];
+        rows += '<tr><td><span class="q-name">' + a.name + "</span></td>" +
+          "<td><code>" + r.best + "</code></td><td><code>" + r.avg + "</code></td>" +
+          "<td><code>" + r.worst + "</code></td><td><code>" + r.space + "</code></td>" +
+          '<td style="color:var(--ink-soft);font-size:12.5px;">' + r.when +
+          ' <button class="btn small" data-open="' + r.id + '" style="margin-left:4px;">Watch</button></td></tr>';
+      });
+    });
+    document.getElementById("sorts-body").innerHTML = rows;
+    Array.prototype.forEach.call(document.getElementById("sorts-body").querySelectorAll("[data-open]"), function (b) {
+      b.addEventListener("click", function () { selectAlgo(b.getAttribute("data-open")); });
+    });
+  }
+
   /* ---------------- boot ---------------- */
   buildPicker();
+  buildSortsTable();
   selectAlgo("reverse", true);
   buildIndex("");
   refreshBigO();

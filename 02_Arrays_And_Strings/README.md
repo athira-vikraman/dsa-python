@@ -5,8 +5,9 @@ Topic 02. Pictures first, jargon later. Everything runnable, everything tested.
 No third-party packages. Python 3.8+ and the standard library only.
 
 > **Watch it run:** [`../visualizer.html`](../visualizer.html) is an interactive
-> page with all six algorithms from this topic animated step by step, plus
-> 20 more related questions. Open it in a browser alongside these notes.
+> page with all six algorithms from this topic animated step by step, plus 25
+> more related questions including every classic sort. Open it in a browser
+> alongside these notes.
 
 ---
 

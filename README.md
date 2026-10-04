@@ -49,9 +49,10 @@ topics. Open it in a browser (double-click the file, or `python3 -m http.server`
 in this folder) and you can:
 
 - drag a slider and watch the six complexity curves pull apart
-- **step through 26 classic questions** one frame at a time &mdash; searching,
-  the four sorts including merge sort, every two-pointer shape, both sliding
-  windows, and the hashing problems they compete with
+- **step through 31 classic questions** one frame at a time &mdash; searching,
+  **all nine sorts** (bubble, selection, insertion, merge, quick, heap,
+  counting, radix, bucket), every two-pointer shape, both sliding windows,
+  and the hashing problems they compete with
 - search the full index by problem, technique or complexity
 
 Each frame shows the data as numbered boxes, marks where every pointer is,

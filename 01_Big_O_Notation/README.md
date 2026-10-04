@@ -6,8 +6,9 @@ A complete, self-contained module: **notes to read**, **code to run**,
 No third-party packages. Python 3.8+ and the standard library only.
 
 > **Watch it run:** [`../visualizer.html`](../visualizer.html) is an interactive
-> page with the growth curves, eight "name the complexity" drills, and 26
-> animated problems. Open it in a browser alongside these notes.
+> page with the growth curves, a side-by-side table of all nine sorts, eight
+> "name the complexity" drills, and 31 animated problems. Open it in a browser
+> alongside these notes.
 
 ---
 
@@ -42,6 +43,7 @@ python3 -m unittest discover -s tests -v
 | 7 | [Python operation costs](notes/07_python_operation_costs.md) | `code/08_python_builtin_costs.py` | stop writing accidental O(n²) |
 | 8 | [How to analyse any code](notes/08_how_to_analyze_any_code.md) | `code/09_growth_experiment.py` | analyse unfamiliar code under pressure |
 | 9 | [The cheat sheet](notes/09_cheatsheet.md) | — | revise the whole module in 5 minutes |
+| + | *(bonus)* nine sorts as a Big O case study | `code/11_sorting_algorithms.py` | see O(n²), O(n log n) and O(n + k) race each other |
 
 Then do the [exercises](exercises/exercises.md).
 
@@ -53,7 +55,7 @@ Then do the [exercises](exercises/exercises.md).
 01_Big_O_Notation/
 ├── README.md                  <- you are here
 ├── notes/                     10 lessons, in reading order
-├── code/                      10 runnable demonstrations
+├── code/                      11 runnable demonstrations
 │   ├── 01_constant_time.py         O(1)
 │   ├── 02_linear_time.py           O(n)
 │   ├── 03_quadratic_time.py        O(n²) + how to fix it
@@ -63,7 +65,8 @@ Then do the [exercises](exercises/exercises.md).
 │   ├── 07_space_complexity.py      measured memory usage
 │   ├── 08_python_builtin_costs.py  the 5 Python performance traps
 │   ├── 09_growth_experiment.py     ASCII charts of every curve
-│   └── 10_time_vs_space_simple.py  time vs space, measured (beginner)
+│   ├── 10_time_vs_space_simple.py  time vs space, measured (beginner)
+│   └── 11_sorting_algorithms.py   nine sorts, O(n^2) to O(n + k)
 ├── exercises/
 │   ├── exercises.md           15 analysis drills + answer key
 │   ├── practice.py            12 functions for YOU to write
@@ -72,6 +75,7 @@ Then do the [exercises](exercises/exercises.md).
     ├── test_solutions.py      proves the model answers are correct
     ├── test_practice.py       grades YOUR work (skips what you haven't done)
     ├── test_code_examples.py  proves every lesson example works
+    ├── test_sorting.py        nine sorts vs sorted(), on awkward inputs
     └── test_complexity.py     times functions to verify their GROWTH
 ```
 
