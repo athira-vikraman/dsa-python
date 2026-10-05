@@ -1,0 +1,14 @@
+{
+  "defaultViewMode": "preview",
+  "livePreview": true,
+  "readableLineLength": true,
+  "showLineNumber": true,
+  "strictLineBreaks": false,
+  "alwaysUpdateLinks": true,
+  "newLinkFormat": "absolute",
+  "useMarkdownLinks": false,
+  "attachmentFolderPath": "./",
+  "showUnsupportedFiles": true,
+  "promptDelete": true,
+  "spellcheck": false
+}

@@ -7,3 +7,10 @@ env/
 .idea/
 .vscode/
 .DS_Store
+
+# Obsidian: keep the vault settings, ignore the per-session churn
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.obsidian/plugins/*/data.json
+.trash/
