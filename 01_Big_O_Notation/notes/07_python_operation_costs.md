@@ -163,3 +163,11 @@ the curve with your own eyes.
 5. What does `items[1:]` cost inside a loop that runs n times?
 
 Next: [Lesson 8 — How to analyse any code, step by step](08_how_to_analyze_any_code.md)
+
+---
+
+## Related concepts
+
+[[Concepts/Arrays|Arrays]] · [[Concepts/Strings|Strings]] · [[Concepts/Hashing|Hashing]]
+
+See also [[Problems/_All problems|all 31 problems]] · [[00 START HERE]]

@@ -137,3 +137,11 @@ Assume roughly 10⁷–10⁸ simple operations per second in Python.
 ---
 
 Back to the [course index](../README.md)
+
+---
+
+## Related concepts
+
+[[Concepts/Big O notation|Big O notation]] · [[Concepts/Sorting|Sorting]] · [[Concepts/Searching|Searching]]
+
+See also [[Problems/_All problems|all 31 problems]] · [[00 START HERE]]

@@ -34,6 +34,17 @@ Standard library only. Python 3.8+.
 
 ---
 
+## In Obsidian
+
+This folder is also an Obsidian vault. Open it and start at
+[[00 START HERE]] — or browse the two indexes:
+
+- [[Problems/_All problems|All 31 problems]] — one note each, with technique,
+  complexity and code
+- [[Concepts/_All concepts|All 18 concepts]] — the hubs those problems link to
+
+Press `Ctrl + G` for the graph view to see how they connect.
+
 ## Start here
 
 ```bash

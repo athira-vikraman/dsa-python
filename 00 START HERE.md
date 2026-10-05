@@ -27,6 +27,23 @@ Tick off what you finish in [[Progress tracker]].
 
 ---
 
+## The two indexes
+
+| | |
+|---|---|
+| [[Problems/_All problems\|🧩 All 31 problems]] | one note each: the question, the technique, the complexity, the code |
+| [[Concepts/_All concepts\|🧠 All 18 concepts]] | the ideas the problems share — these are the hubs in the graph |
+
+> [!tip] See the graph
+> Press `Ctrl + G`. Each **concept** sits at the centre of a cluster of the
+> problems that use it. Click any dot to open that note.
+>
+> Even better: open a single note and press `Ctrl + P` → **"Open local
+> graph"**. That shows only what *this* note connects to, which is far easier
+> to read than the whole web.
+
+---
+
 ## Topic 01 — Big O notation
 
 The measuring tool. Read these in order.

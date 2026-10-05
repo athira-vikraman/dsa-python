@@ -175,3 +175,11 @@ Reduce these to simplest Big O:
 (Answers in `exercises/exercises.md`.)
 
 Next: [Lesson 4 — The common complexity classes](04_common_complexity_classes.md)
+
+---
+
+## Related concepts
+
+[[Concepts/Big O notation|Big O notation]] · [[Concepts/Quadratic time|Quadratic time]] · [[Concepts/Logarithmic time|Logarithmic time]]
+
+See also [[Problems/_All problems|all 31 problems]] · [[00 START HERE]]

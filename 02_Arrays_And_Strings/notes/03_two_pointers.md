@@ -330,3 +330,11 @@ Both are O(n) time and O(1) space. They replace nested loops - O(n^2).
    values that aren't 5.
 
 Next: [Lesson 4 — The sliding window](04_sliding_window.md)
+
+---
+
+## Related concepts
+
+[[Concepts/Two pointers|Two pointers]] · [[Concepts/In-place algorithms|In-place algorithms]] · [[Concepts/Arrays|Arrays]]
+
+See also [[Problems/_All problems|all 31 problems]] · [[00 START HERE]]

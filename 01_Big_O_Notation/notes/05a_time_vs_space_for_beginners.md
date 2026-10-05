@@ -410,3 +410,11 @@ python3 code/10_time_vs_space_simple.py
 
 That file builds the same function two ways and prints the actual memory each
 one uses, so you can watch "O(1) space" and "O(n) space" with your own eyes.
+
+---
+
+## Related concepts
+
+[[Concepts/Space complexity|Space complexity]] · [[Concepts/In-place algorithms|In-place algorithms]] · [[Concepts/Recursion|Recursion]] · [[Concepts/Hashing|Hashing]]
+
+See also [[Problems/_All problems|all 31 problems]] · [[00 START HERE]]

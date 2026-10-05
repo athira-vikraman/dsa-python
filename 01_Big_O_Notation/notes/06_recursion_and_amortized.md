@@ -178,3 +178,11 @@ q.popleft()       # O(1)  -- a list would be O(n)
 5. You are writing a queue. Why is `list.pop(0)` a bug, and what should you use?
 
 Next: [Lesson 7 — The cost of every Python operation](07_python_operation_costs.md)
+
+---
+
+## Related concepts
+
+[[Concepts/Recursion|Recursion]] · [[Concepts/Divide and conquer|Divide and conquer]] · [[Concepts/Arrays|Arrays]]
+
+See also [[Problems/_All problems|all 31 problems]] · [[00 START HERE]]

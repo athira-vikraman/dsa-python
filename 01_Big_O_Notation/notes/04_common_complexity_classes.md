@@ -195,3 +195,11 @@ Name the complexity:
 6. Repeatedly halving a number until it reaches 1
 
 Next: [Lesson 5 — Space complexity](05_space_complexity.md)
+
+---
+
+## Related concepts
+
+[[Concepts/Constant time|Constant time]] · [[Concepts/Logarithmic time|Logarithmic time]] · [[Concepts/Linear time|Linear time]] · [[Concepts/Linearithmic time|Linearithmic time]] · [[Concepts/Quadratic time|Quadratic time]]
+
+See also [[Problems/_All problems|all 31 problems]] · [[00 START HERE]]

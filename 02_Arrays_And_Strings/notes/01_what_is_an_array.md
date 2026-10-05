@@ -232,3 +232,11 @@ items = [4, 8, 15, 16, 23, 42]
    counting at 0. Six boxes means boxes 0 to 5.
 
 Next: [Lesson 2 — Strings are arrays that can't change](02_what_is_a_string.md)
+
+---
+
+## Related concepts
+
+[[Concepts/Arrays|Arrays]] · [[Concepts/Constant time|Constant time]] · [[Concepts/Linear time|Linear time]]
+
+See also [[Problems/_All problems|all 31 problems]] · [[00 START HERE]]

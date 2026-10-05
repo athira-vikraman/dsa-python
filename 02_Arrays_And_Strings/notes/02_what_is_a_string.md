@@ -225,3 +225,11 @@ word = "PROGRAM"
    (Or just `word.lower()`, which is O(n) and already written in C!)
 
 Next: [Lesson 3 — The two pointers trick](03_two_pointers.md)
+
+---
+
+## Related concepts
+
+[[Concepts/Strings|Strings]] · [[Concepts/Arrays|Arrays]] · [[Concepts/Quadratic time|Quadratic time]]
+
+See also [[Problems/_All problems|all 31 problems]] · [[00 START HERE]]

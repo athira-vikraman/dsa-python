@@ -162,3 +162,11 @@ lengths of the two lists."*
 5. Which uses less memory: `items[::-1]` or a two-pointer in-place reverse?
 
 Next: [Lesson 6 — Recursion and amortized analysis](06_recursion_and_amortized.md)
+
+---
+
+## Related concepts
+
+[[Concepts/Space complexity|Space complexity]] · [[Concepts/In-place algorithms|In-place algorithms]] · [[Concepts/Recursion|Recursion]]
+
+See also [[Problems/_All problems|all 31 problems]] · [[00 START HERE]]

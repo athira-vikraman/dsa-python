@@ -113,3 +113,11 @@ Answer in your head before moving on (answers in `exercises/exercises.md`):
    on 4 million?
 
 Next: [Lesson 2 — What Big O actually means](02_what_is_big_o.md)
+
+---
+
+## Related concepts
+
+[[Concepts/Big O notation|Big O notation]] · [[Concepts/Linear time|Linear time]] · [[Concepts/Quadratic time|Quadratic time]]
+
+See also [[Problems/_All problems|all 31 problems]] · [[00 START HERE]]

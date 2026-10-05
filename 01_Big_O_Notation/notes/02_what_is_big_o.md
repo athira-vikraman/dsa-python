@@ -131,3 +131,11 @@ functions and shows the curve matching the theory.
 4. Why do we default to the worst case?
 
 Next: [Lesson 3 — The rules for simplifying Big O](03_rules_of_big_o.md)
+
+---
+
+## Related concepts
+
+[[Concepts/Big O notation|Big O notation]] · [[Concepts/Linear time|Linear time]] · [[Concepts/Searching|Searching]]
+
+See also [[Problems/_All problems|all 31 problems]] · [[00 START HERE]]

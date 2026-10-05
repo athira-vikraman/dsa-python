@@ -228,3 +228,11 @@ def f(items):
 ```
 
 Next: [Lesson 9 — The cheat sheet](09_cheatsheet.md)
+
+---
+
+## Related concepts
+
+[[Concepts/Big O notation|Big O notation]] · [[Concepts/Hashing|Hashing]] · [[Concepts/Quadratic time|Quadratic time]]
+
+See also [[Problems/_All problems|all 31 problems]] · [[00 START HERE]]
